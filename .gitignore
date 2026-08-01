@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+vendor/
+*.zip
+*.log
+
+# Local WordPress symlinks / test artifacts
+.wp-env.override.json
