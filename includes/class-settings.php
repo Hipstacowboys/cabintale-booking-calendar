@@ -468,8 +468,8 @@ class Settings {
 
 		echo '<div style="overflow-x:auto">';
 		echo '<table class="widefat striped"><thead><tr>';
-		echo '<th>' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th>' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th class="cbt-col-name">' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th class="cbt-col-shows">' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th class="cbt-actions">' . esc_html__( 'Actions', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
@@ -500,7 +500,7 @@ class Settings {
 				$show_parent ? '<span class="cbt-widget-parent">' . esc_html( $parent ) . '</span>' : ''
 			);
 
-			printf( '<td>%s</td>', esc_html( self::kind_label( $widget['kind'] ) ) );
+			printf( '<td class="cbt-col-shows">%s</td>', esc_html( self::kind_label( $widget['kind'] ) ) );
 
 			// Styling, language and behaviour are widget settings, so they are
 			// changed in Cabintale. The link carries only the widget token; the

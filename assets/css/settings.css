@@ -84,6 +84,9 @@
 	border-radius: 12px;
 	padding: 20px 22px;
 	box-shadow: none;
+	/* Core .card ships max-width:520px, which squeezed the widget table into a
+	   column of wrapped words. This is the one core value worth overriding. */
+	max-width: var(--cbt-width);
 }
 
 .cbt-settings .card > .title,
@@ -220,6 +223,15 @@
 
 .cbt-settings .cbt-actions .button + .button {
 	margin-left: 6px;
+}
+
+.cbt-settings .cbt-col-name {
+	width: 40%;
+}
+
+.cbt-settings .cbt-col-shows {
+	width: auto;
+	color: var(--cbt-muted);
 }
 
 /* The widget's own name leads; its property or service sits under it, quiet. */

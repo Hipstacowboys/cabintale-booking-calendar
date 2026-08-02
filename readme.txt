@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.4.1
+Stable tag: 0.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,9 @@ Example: `[cabintale_widget type="service" border="0"]`
 4. Settings → Cabintale: connected account, widget list and live preview.
 
 == Changelog ==
+
+= 0.4.2 =
+* Fixed the widgets table being squeezed into a narrow column.
 
 = 0.4.1 =
 * Wider settings layout, and the widget actions are now buttons rather than a text link.
