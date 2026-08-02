@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 class Settings {
 
 	const OPTION_TOKEN       = 'cabintale_default_widget_token';
+	const OPTION_KIND        = 'cabintale_default_widget_kind';
 	const OPTION_NEEDS_SETUP = 'cabintale_needs_setup';
 	const PAGE_SLUG          = 'cabintale-booking-calendar';
 
@@ -52,6 +53,26 @@ class Settings {
 				'show_in_rest'      => false,
 			)
 		);
+
+		register_setting(
+			self::PAGE_SLUG,
+			self::OPTION_KIND,
+			array(
+				'type'              => 'string',
+				'default'           => Renderer::KIND_PLACE,
+				'sanitize_callback' => array( __CLASS__, 'sanitize_kind' ),
+				'show_in_rest'      => false,
+			)
+		);
+	}
+
+	/**
+	 * @param mixed $value Submitted value.
+	 */
+	public static function sanitize_kind( $value ): string {
+		$value = strtolower( trim( (string) $value ) );
+
+		return isset( Renderer::KIND_ATTRIBUTES[ $value ] ) ? $value : Renderer::KIND_PLACE;
 	}
 
 	/**
@@ -94,59 +115,181 @@ class Settings {
 			<h1><?php echo esc_html__( 'Cabintale', 'cabintale-booking-calendar' ); ?></h1>
 
 			<?php self::render_status(); ?>
-			<?php self::render_connection(); ?>
 
-			<details<?php echo Connect::is_connected() ? '' : ' open'; ?>>
-				<summary><?php echo esc_html__( 'Use a widget ID instead', 'cabintale-booking-calendar' ); ?></summary>
-
+			<div class="card" style="max-width:46em">
+				<h2 class="title"><?php echo esc_html__( 'How this works', 'cabintale-booking-calendar' ); ?></h2>
 				<p>
-					<?php echo esc_html__( 'If you would rather not connect your account, paste a widget ID here and it becomes the default for new blocks. You can still override it on any individual block.', 'cabintale-booking-calendar' ); ?>
+					<?php echo esc_html__( 'Your places, prices, availability and calendar sync live in your Cabintale account. This plugin has one job: putting them on your WordPress pages.', 'cabintale-booking-calendar' ); ?>
 				</p>
+				<p>
+					<?php echo esc_html__( 'Block a date or change a price in Cabintale and your pages show it straight away — there is nothing to update or re-publish here.', 'cabintale-booking-calendar' ); ?>
+				</p>
+			</div>
 
-				<form method="post" action="options.php">
-					<?php settings_fields( self::PAGE_SLUG ); ?>
+			<?php self::render_connection(); ?>
+			<?php self::render_usage(); ?>
+			<?php self::render_where_to_change(); ?>
+			<?php self::render_advanced(); ?>
+		</div>
+		<?php
+	}
 
-					<table class="form-table" role="presentation">
-						<tr>
-							<th scope="row">
-								<label for="cabintale_default_widget_token">
-									<?php echo esc_html__( 'Default widget ID', 'cabintale-booking-calendar' ); ?>
-								</label>
-							</th>
-							<td>
-								<input
-									type="text"
-									class="regular-text code"
-									id="cabintale_default_widget_token"
-									name="<?php echo esc_attr( self::OPTION_TOKEN ); ?>"
-									value="<?php echo esc_attr( (string) get_option( self::OPTION_TOKEN, '' ) ); ?>"
-									placeholder="00000000-0000-0000-0000-000000000000"
-								/>
-								<p class="description">
-									<?php echo esc_html__( 'In Cabintale, open your widget and copy the ID from its embed code.', 'cabintale-booking-calendar' ); ?>
-								</p>
-							</td>
-						</tr>
-					</table>
+	/**
+	 * Step two: the widget is connected, now get it onto a page.
+	 */
+	private static function render_usage(): void {
+		echo '<h2>' . esc_html__( 'Put a widget on a page', 'cabintale-booking-calendar' ) . '</h2>';
 
-					<?php submit_button(); ?>
-				</form>
-			</details>
+		echo '<p><strong>' . esc_html__( 'Block editor', 'cabintale-booking-calendar' ) . '</strong></p>';
 
-			<h2><?php echo esc_html__( 'Adding a widget to a page', 'cabintale-booking-calendar' ); ?></h2>
+		echo '<ol>';
+		printf( '<li>%s</li>', esc_html__( 'Edit the page where you want bookings.', 'cabintale-booking-calendar' ) );
+		printf( '<li>%s</li>', esc_html__( 'Add the “Cabintale booking widget” block — type /cabintale to find it quickly.', 'cabintale-booking-calendar' ) );
+		printf( '<li>%s</li>', esc_html__( 'Pick your widget from the dropdown in the block settings, then update the page.', 'cabintale-booking-calendar' ) );
+		echo '</ol>';
+
+		echo '<p class="description">' . esc_html__( 'While editing you will see a grey card instead of the calendar. That is normal — the real widget appears on the published page.', 'cabintale-booking-calendar' ) . '</p>';
+
+		echo '<p><strong>' . esc_html__( 'Elementor, Bricks, classic editor', 'cabintale-booking-calendar' ) . '</strong></p>';
+
+		echo '<p>' . esc_html__( 'Paste this shortcode into any text field. It shows your default widget:', 'cabintale-booking-calendar' ) . '</p>';
+		echo '<p><code>[cabintale_widget]</code></p>';
+	}
+
+	/**
+	 * The question this screen kept failing to answer: where do I go to change
+	 * the thing I want to change?
+	 */
+	private static function render_where_to_change(): void {
+		$rows = array(
+			array(
+				__( 'Prices, availability, blocked dates, seasons', 'cabintale-booking-calendar' ),
+				__( 'Cabintale', 'cabintale-booking-calendar' ),
+				app_url() . '/places',
+			),
+			array(
+				__( 'Sync with Airbnb, Booking.com, Vrbo (iCal)', 'cabintale-booking-calendar' ),
+				__( 'Cabintale', 'cabintale-booking-calendar' ),
+				app_url() . '/places',
+			),
+			array(
+				__( 'Services and time slots', 'cabintale-booking-calendar' ),
+				__( 'Cabintale', 'cabintale-booking-calendar' ),
+				app_url() . '/services',
+			),
+			array(
+				__( 'Bookings that come in', 'cabintale-booking-calendar' ),
+				__( 'Cabintale', 'cabintale-booking-calendar' ),
+				app_url() . '/dashboard',
+			),
+			array(
+				__( 'Which widget appears on which page', 'cabintale-booking-calendar' ),
+				__( 'Here, in WordPress', 'cabintale-booking-calendar' ),
+				'',
+			),
+			array(
+				__( 'Border, and hiding the booking form', 'cabintale-booking-calendar' ),
+				__( 'Block settings on the page', 'cabintale-booking-calendar' ),
+				'',
+			),
+		);
+
+		echo '<h2>' . esc_html__( 'Where to change what', 'cabintale-booking-calendar' ) . '</h2>';
+		echo '<table class="widefat striped" style="max-width:46em"><tbody>';
+
+		foreach ( $rows as $row ) {
+			echo '<tr><td>' . esc_html( $row[0] ) . '</td><td>';
+
+			if ( '' !== $row[2] ) {
+				printf(
+					'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+					esc_url( $row[2] ),
+					esc_html( $row[1] )
+				);
+			} else {
+				echo esc_html( $row[1] );
+			}
+
+			echo '</td></tr>';
+		}
+
+		echo '</tbody></table>';
+	}
+
+	/**
+	 * The escape hatch for people who will not connect an account, plus the
+	 * shortcode reference. Collapsed, because neither is the normal path.
+	 */
+	private static function render_advanced(): void {
+		?>
+		<h2><?php echo esc_html__( 'Advanced', 'cabintale-booking-calendar' ); ?></h2>
+
+		<details<?php echo Connect::is_connected() ? '' : ' open'; ?>>
+			<summary><?php echo esc_html__( 'Use a widget ID instead of connecting', 'cabintale-booking-calendar' ); ?></summary>
 
 			<p>
-				<?php echo esc_html__( 'In the block editor, add the “Cabintale booking widget” block. In Elementor, Bricks, the classic editor or a theme template, use the shortcode:', 'cabintale-booking-calendar' ); ?>
+				<?php echo esc_html__( 'If you would rather not connect your account, paste a widget ID here. It becomes the widget used by the shortcode and by blocks where nothing is chosen. In Cabintale, open a widget and copy the ID from its embed code.', 'cabintale-booking-calendar' ); ?>
 			</p>
 
-			<p><code>[cabintale_widget]</code></p>
+			<form method="post" action="options.php">
+				<?php settings_fields( self::PAGE_SLUG ); ?>
 
-			<p>
-				<?php echo esc_html__( 'Optional attributes: token (a specific widget), type (place, service or checkout), border (1 or 0), availability_only (1 or 0).', 'cabintale-booking-calendar' ); ?>
-			</p>
+				<table class="form-table" role="presentation">
+					<tr>
+						<th scope="row">
+							<label for="cabintale_default_widget_token">
+								<?php echo esc_html__( 'Widget ID', 'cabintale-booking-calendar' ); ?>
+							</label>
+						</th>
+						<td>
+							<input
+								type="text"
+								class="regular-text code"
+								id="cabintale_default_widget_token"
+								name="<?php echo esc_attr( self::OPTION_TOKEN ); ?>"
+								value="<?php echo esc_attr( (string) get_option( self::OPTION_TOKEN, '' ) ); ?>"
+								placeholder="00000000-0000-0000-0000-000000000000"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="cabintale_default_widget_kind">
+								<?php echo esc_html__( 'What it is', 'cabintale-booking-calendar' ); ?>
+							</label>
+						</th>
+						<td>
+							<?php $kind = (string) get_option( self::OPTION_KIND, Renderer::KIND_PLACE ); ?>
+							<select id="cabintale_default_widget_kind" name="<?php echo esc_attr( self::OPTION_KIND ); ?>">
+								<option value="place" <?php selected( $kind, 'place' ); ?>><?php echo esc_html__( 'Place — availability calendar', 'cabintale-booking-calendar' ); ?></option>
+								<option value="service" <?php selected( $kind, 'service' ); ?>><?php echo esc_html__( 'Service — time slots', 'cabintale-booking-calendar' ); ?></option>
+								<option value="checkout" <?php selected( $kind, 'checkout' ); ?>><?php echo esc_html__( 'Product — checkout button', 'cabintale-booking-calendar' ); ?></option>
+							</select>
+							<p class="description">
+								<?php echo esc_html__( 'Must match the widget the ID belongs to, otherwise the widget will not load. Connecting your account removes this guesswork.', 'cabintale-booking-calendar' ); ?>
+							</p>
+						</td>
+					</tr>
+				</table>
+
+				<?php submit_button(); ?>
+			</form>
+		</details>
+
+		<details>
+			<summary><?php echo esc_html__( 'Shortcode options', 'cabintale-booking-calendar' ); ?></summary>
+
+			<table class="widefat striped" style="max-width:46em">
+				<tbody>
+					<tr><td><code>token</code></td><td><?php echo esc_html__( 'A specific widget ID. Defaults to the one above.', 'cabintale-booking-calendar' ); ?></td></tr>
+					<tr><td><code>type</code></td><td><?php echo esc_html__( 'place, service or checkout. Must match the widget.', 'cabintale-booking-calendar' ); ?></td></tr>
+					<tr><td><code>border</code></td><td><?php echo esc_html__( '1 or 0.', 'cabintale-booking-calendar' ); ?></td></tr>
+					<tr><td><code>availability_only</code></td><td><?php echo esc_html__( '1 or 0. Places only — shows the calendar without the booking form.', 'cabintale-booking-calendar' ); ?></td></tr>
+				</tbody>
+			</table>
 
 			<p><code>[cabintale_widget type="place" border="0" availability_only="1"]</code></p>
-		</div>
+		</details>
 		<?php
 	}
 
@@ -190,7 +333,24 @@ class Settings {
 
 			echo '</p>';
 
-			echo '<p class="description">' . esc_html__( 'Add the Cabintale block to any page and pick a widget from the list — no IDs to copy.', 'cabintale-booking-calendar' ) . '</p>';
+			if ( $widgets ) {
+				echo '<table class="widefat striped" style="max-width:46em"><thead><tr>';
+				echo '<th>' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
+				echo '<th>' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
+				echo '</tr></thead><tbody>';
+
+				foreach ( $widgets as $widget ) {
+					$label = trim( ( $widget['group'] ? $widget['group'] . ' — ' : '' ) . $widget['name'] );
+
+					printf(
+						'<tr><td>%s</td><td>%s</td></tr>',
+						esc_html( '' !== $label ? $label : __( 'Untitled widget', 'cabintale-booking-calendar' ) ),
+						esc_html( self::kind_label( $widget['kind'] ) )
+					);
+				}
+
+				echo '</tbody></table>';
+			}
 
 			return;
 		}
@@ -241,6 +401,21 @@ class Settings {
 			esc_attr( $messages[ $status ][0] ),
 			esc_html( $messages[ $status ][1] )
 		);
+	}
+
+	/**
+	 * What a widget shows, in the owner's words rather than ours.
+	 */
+	private static function kind_label( string $kind ): string {
+		if ( Renderer::KIND_SERVICE === $kind ) {
+			return __( 'A service — time slots', 'cabintale-booking-calendar' );
+		}
+
+		if ( Renderer::KIND_CHECKOUT === $kind ) {
+			return __( 'A product — checkout button', 'cabintale-booking-calendar' );
+		}
+
+		return __( 'A place — availability calendar', 'cabintale-booking-calendar' );
 	}
 
 	private static function action_url( string $action ): string {

@@ -17,30 +17,34 @@
 	var useEffect = element.useEffect;
 	var __ = i18n.__;
 
-	var KINDS = [
-		{ value: 'place', label: __( 'Place — availability calendar', 'cabintale-booking-calendar' ) },
-		{ value: 'service', label: __( 'Service — time slots', 'cabintale-booking-calendar' ) },
-		{ value: 'checkout', label: __( 'Product — checkout button', 'cabintale-booking-calendar' ) },
-	];
-
+	/**
+	 * What each kind of widget is, in the owner's words. There is no "type"
+	 * control: a widget already is a place, service or product widget, and
+	 * saying so twice is how you end up with the two disagreeing.
+	 */
 	function kindLabel( kind ) {
-		for ( var i = 0; i < KINDS.length; i++ ) {
-			if ( KINDS[ i ].value === kind ) {
-				return KINDS[ i ].label;
-			}
+		if ( 'service' === kind ) {
+			return __( 'Service', 'cabintale-booking-calendar' );
 		}
-		return KINDS[ 0 ].label;
+		if ( 'checkout' === kind ) {
+			return __( 'Product', 'cabintale-booking-calendar' );
+		}
+		return __( 'Place', 'cabintale-booking-calendar' );
 	}
 
 	/**
-	 * "Chata Beskydy — Main calendar", falling back sensibly when either half is
-	 * missing, so the dropdown never shows a bare dash.
+	 * "Srub Losiny — Úvod (Place)", degrading sensibly when a name or group is
+	 * missing so the dropdown never shows a bare dash.
 	 */
 	function widgetLabel( widget ) {
-		if ( widget.group && widget.name ) {
-			return widget.group + ' — ' + widget.name;
+		var name = widget.name || '';
+		var base = widget.group && name ? widget.group + ' — ' + name : name || widget.group;
+
+		if ( ! base ) {
+			base = widget.token.slice( 0, 8 ) + '…';
 		}
-		return widget.name || widget.group || widget.token.slice( 0, 8 ) + '…';
+
+		return base + ' (' + kindLabel( widget.kind ) + ')';
 	}
 
 	/**
@@ -148,50 +152,27 @@
 							__nextHasNoMarginBottom: true,
 					  } )
 					: null
-			),
-			el(
-				components.PanelBody,
-				{ title: __( 'Advanced', 'cabintale-booking-calendar' ), initialOpen: false },
-				el( components.SelectControl, {
-					label: __( 'Type', 'cabintale-booking-calendar' ),
-					value: atts.kind,
-					options: KINDS,
-					onChange: function ( value ) {
-						setAttributes( { kind: value } );
-					},
-					help: __(
-						'Set automatically when you pick a widget above. It must match the widget the ID belongs to.',
-						'cabintale-booking-calendar'
-					),
-					__nextHasNoMarginBottom: true,
-				} ),
-				el( components.TextControl, {
-					label: __( 'Widget ID', 'cabintale-booking-calendar' ),
-					value: atts.token,
-					onChange: function ( value ) {
-						setAttributes( { token: value.trim() } );
-					},
-					help: __(
-						'Leave empty to use the default widget from Settings → Cabintale.',
-						'cabintale-booking-calendar'
-					),
-					__nextHasNoMarginBottom: true,
-				} )
 			)
 		);
 
 		// Both states use core's Placeholder so the block inherits WordPress admin
 		// typography and spacing instead of carrying styles of its own.
+		var chosen = null;
+		for ( var c = 0; c < connection.widgets.length; c++ ) {
+			if ( connection.widgets[ c ].token === atts.token ) {
+				chosen = connection.widgets[ c ];
+				break;
+			}
+		}
+
 		var body = atts.token
 			? el( components.Placeholder, {
 					icon: 'calendar-alt',
-					label: kindLabel( atts.kind ),
-					instructions:
-						__( 'Widget', 'cabintale-booking-calendar' ) +
-						' ' +
-						atts.token.slice( 0, 8 ) +
-						'… — ' +
-						__( 'the live widget appears on the published page.', 'cabintale-booking-calendar' ),
+					label: chosen ? widgetLabel( chosen ) : kindLabel( atts.kind ),
+					instructions: __(
+						'The live widget appears on the published page.',
+						'cabintale-booking-calendar'
+					),
 			  } )
 			: el(
 					components.Placeholder,

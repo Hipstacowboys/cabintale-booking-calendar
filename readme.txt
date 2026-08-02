@@ -102,15 +102,16 @@ Example: `[cabintale_widget type="service" border="0"]`
 
 1. An availability calendar on a published page.
 2. The Cabintale booking widget block in the editor.
-3. Block settings: widget type, ID, border and availability-only.
+3. Block settings: pick a widget by name.
 4. Settings → Cabintale, where the default widget is saved.
 
 == Changelog ==
 
 = 0.2.0 =
 * Connect your Cabintale account and pick widgets by name instead of copying IDs.
+* The block now asks only which widget to show — each one is labelled as a place, service or product, so there is no type to keep in sync.
+* Settings screen rewritten to explain what lives in Cabintale and what lives in WordPress, with links to the right place for each.
 * One-click "Create my booking page".
-* Choosing a widget now sets its type automatically.
 
 = 0.1.0 =
 * First release: Cabintale booking widget block, `[cabintale_widget]` shortcode, and a default-widget setting.

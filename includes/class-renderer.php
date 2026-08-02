@@ -43,12 +43,17 @@ class Renderer {
 	 */
 	public static function normalize( array $raw ): array {
 		$token = isset( $raw['token'] ) ? trim( (string) $raw['token'] ) : '';
+		$kind  = isset( $raw['kind'] ) ? strtolower( (string) $raw['kind'] ) : self::KIND_PLACE;
 
+		// No widget chosen here, so fall back to the site default — and take its
+		// kind with it. A widget and its kind always travel together: pairing the
+		// default place widget with someone's leftover "service" would ask
+		// Cabintale for a service widget that does not exist, and the visitor
+		// gets an empty frame.
 		if ( '' === $token ) {
 			$token = (string) get_option( Settings::OPTION_TOKEN, '' );
+			$kind  = (string) get_option( Settings::OPTION_KIND, self::KIND_PLACE );
 		}
-
-		$kind = isset( $raw['kind'] ) ? strtolower( (string) $raw['kind'] ) : self::KIND_PLACE;
 
 		if ( ! isset( self::KIND_ATTRIBUTES[ $kind ] ) ) {
 			$kind = self::KIND_PLACE;

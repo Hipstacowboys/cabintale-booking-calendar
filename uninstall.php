@@ -25,6 +25,7 @@ defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 function cabintale_bc_delete_site_data() {
 	$options = array(
 		'cabintale_default_widget_token',
+		'cabintale_default_widget_kind',
 		'cabintale_needs_setup',
 		'cabintale_api_token',
 		'cabintale_account_name',
