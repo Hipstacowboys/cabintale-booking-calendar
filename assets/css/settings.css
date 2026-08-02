@@ -1,0 +1,209 @@
+/**
+ * Cabintale identity for Settings → Cabintale.
+ *
+ * Deliberately a thin layer over wp-admin rather than a replacement for it.
+ * Core components (.card, .widefat, .form-table, .button, .notice) keep their
+ * own markup and behaviour, so focus rings, contrast, responsive stacking and
+ * the user's chosen admin colour scheme all keep working. What is added here is
+ * identity: a branded header, warmer surfaces, and one brand-coloured action.
+ *
+ * Everything is scoped under .cbt-settings so nothing leaks into the rest of
+ * the admin, and the file is only enqueued on this one screen.
+ *
+ * Palette matches the Cabintale admin design system:
+ *   ink #0E1413 · cabintale green #0E5842 · lime mark #C8E86B
+ *   warm canvas #F6F6F3 · warm card #FBFBF8 · warm line #EBEBE5
+ */
+
+.cbt-settings {
+	--cbt-green: #0E5842;
+	--cbt-ink: #0E1413;
+	--cbt-line: #EBEBE5;
+	--cbt-card: #FBFBF8;
+	--cbt-muted: #6F6F6F;
+}
+
+/* ── Header band ─────────────────────────────────────────────────────────── */
+
+.cbt-header {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex-wrap: wrap;
+	margin: 16px 0 20px;
+	padding: 18px 20px;
+	max-width: 46em;
+	background: var(--cbt-ink);
+	border-radius: 12px;
+}
+
+.cbt-header__mark {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	flex: 0 0 40px;
+}
+
+.cbt-header__mark img {
+	width: 26px;
+	height: 26px;
+}
+
+.cbt-header__text {
+	min-width: 0;
+}
+
+/* Overrides core's h1 sizing inside the band only — elsewhere on the page
+   core headings are left alone. */
+.cbt-settings .cbt-header__title {
+	margin: 0;
+	padding: 0;
+	font-size: 18px; /* h4 step */
+	line-height: 1.3;
+	font-weight: 600;
+	color: #fff;
+}
+
+.cbt-header__sub {
+	margin: 2px 0 0;
+	font-size: 13px;
+	line-height: 1.4;
+	color: rgba( 255, 255, 255, 0.72 );
+}
+
+/* ── Cards ───────────────────────────────────────────────────────────────── */
+
+.cbt-settings .card {
+	background: var(--cbt-card);
+	border: 1px solid var(--cbt-line);
+	border-radius: 12px;
+	padding: 20px 22px;
+	box-shadow: none;
+}
+
+.cbt-settings .card > .title,
+.cbt-settings .card > h2.title {
+	margin-top: 0;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--cbt-ink);
+}
+
+/* ── Section headings ────────────────────────────────────────────────────── */
+
+.cbt-settings > h2 {
+	margin: 28px 0 10px;
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--cbt-ink);
+}
+
+/* ── The one brand-coloured action ───────────────────────────────────────── */
+
+/* Scoped to our own class rather than .button-primary generally, so every
+   other primary button in the admin keeps the user's colour scheme. Focus and
+   disabled states are left to core. */
+.cbt-settings .cbt-button-brand {
+	background: var(--cbt-green);
+	border-color: var(--cbt-green);
+	color: #fff;
+	text-shadow: none;
+}
+
+.cbt-settings .cbt-button-brand:hover,
+.cbt-settings .cbt-button-brand:focus {
+	/* No darker green exists in the palette, so darken the one that does
+	   rather than inventing a second brand colour. */
+	filter: brightness( 0.88 );
+	color: #fff;
+}
+
+.cbt-settings .cbt-button-brand[aria-disabled="true"] {
+	opacity: 0.7;
+	cursor: default;
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+
+.cbt-settings .widefat {
+	border-color: var(--cbt-line);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.cbt-settings .widefat thead th {
+	font-weight: 600;
+	color: var(--cbt-ink);
+}
+
+/* ── Disclosures ─────────────────────────────────────────────────────────── */
+
+.cbt-settings details {
+	max-width: 46em;
+	margin: 0 0 10px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid var(--cbt-line);
+	border-radius: 8px;
+}
+
+.cbt-settings details > summary {
+	cursor: pointer;
+	font-weight: 600;
+	color: var(--cbt-ink);
+}
+
+.cbt-settings details[open] > summary {
+	margin-bottom: 10px;
+}
+
+/* ── Connected line ──────────────────────────────────────────────────────── */
+
+.cbt-connected {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+	max-width: 46em;
+	margin: 0 0 20px;
+	padding: 12px 16px;
+	background: #fff;
+	border: 1px solid var(--cbt-line);
+	border-radius: 8px;
+}
+
+.cbt-connected .dashicons-yes-alt {
+	color: var(--cbt-green);
+}
+
+.cbt-connected__meta {
+	color: var(--cbt-muted);
+}
+
+/* Push the disconnect button to the far edge on roomy screens, let it wrap
+   underneath when there is no room. */
+.cbt-connected__action {
+	margin-left: auto;
+}
+
+/* ── Preview panel ───────────────────────────────────────────────────────── */
+
+.cbt-preview iframe {
+	width: 100%;
+	max-width: 460px;
+	border: 1px solid var(--cbt-line);
+	border-radius: 8px;
+	background: #fff;
+}
+
+@media screen and ( max-width: 782px ) {
+	.cbt-header {
+		padding: 16px;
+	}
+
+	.cbt-connected__action {
+		margin-left: 0;
+	}
+}

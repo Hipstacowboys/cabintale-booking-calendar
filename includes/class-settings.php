@@ -41,6 +41,13 @@ class Settings {
 			return;
 		}
 
+		wp_enqueue_style(
+			'cabintale-bc-settings',
+			PLUGIN_URL . 'assets/css/settings.css',
+			array(),
+			VERSION
+		);
+
 		wp_enqueue_script(
 			'cabintale-bc-settings',
 			PLUGIN_URL . 'assets/js/settings.js',
@@ -132,8 +139,16 @@ class Settings {
 		}
 
 		?>
-		<div class="wrap">
-			<h1><?php echo esc_html__( 'Cabintale', 'cabintale-booking-calendar' ); ?></h1>
+		<div class="wrap cbt-settings">
+			<div class="cbt-header">
+				<span class="cbt-header__mark">
+					<img src="<?php echo esc_url( PLUGIN_URL . 'assets/img/cabintale-mark.svg' ); ?>" alt="" aria-hidden="true" width="26" height="26" />
+				</span>
+				<span class="cbt-header__text">
+					<h1 class="cbt-header__title"><?php echo esc_html__( 'Cabintale', 'cabintale-booking-calendar' ); ?></h1>
+					<p class="cbt-header__sub"><?php echo esc_html__( 'Booking calendar and availability for your pages', 'cabintale-booking-calendar' ); ?></p>
+				</span>
+			</div>
 
 			<?php
 			self::render_status();
@@ -315,10 +330,10 @@ class Settings {
 			$account = Connect::account_name();
 			$widgets = Connect::widgets();
 
-			echo '<p>';
+			echo '<div class="cbt-connected">';
 
 			printf(
-				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span> <strong>%s</strong>%s ',
+				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span> <strong>%s</strong><span class="cbt-connected__meta">%s</span>',
 				esc_html( '' !== $account ? $account : __( 'Connected', 'cabintale-booking-calendar' ) ),
 				esc_html(
 					sprintf(
@@ -330,13 +345,13 @@ class Settings {
 			);
 
 			printf(
-				'<a href="%1$s" class="button" data-cabintale-busy="%2$s">%3$s</a>',
+				'<a href="%1$s" class="button cbt-connected__action" data-cabintale-busy="%2$s">%3$s</a>',
 				esc_url( self::action_url( 'disconnect' ) ),
 				esc_attr__( 'Disconnecting…', 'cabintale-booking-calendar' ),
 				esc_html__( 'Disconnect', 'cabintale-booking-calendar' )
 			);
 
-			echo '</p>';
+			echo '</div>';
 
 			return;
 		}
@@ -397,7 +412,7 @@ class Settings {
 		}
 
 		printf(
-			'<p><a href="%1$s" class="button button-primary" data-cabintale-busy="%2$s">%3$s</a></p>',
+			'<p><a href="%1$s" class="button button-primary cbt-button-brand" data-cabintale-busy="%2$s">%3$s</a></p>',
 			esc_url( self::action_url( 'create_page' ) ),
 			esc_attr__( 'Creating the page…', 'cabintale-booking-calendar' ),
 			esc_html__( 'Create booking page', 'cabintale-booking-calendar' )
@@ -439,7 +454,7 @@ class Settings {
 			// carries no src until opened — see assets/js/settings.js for why the
 			// first request is deliberately user-initiated.
 			printf(
-				'<tr id="%1$s" hidden><td colspan="3">%2$s<iframe data-src="%3$s" title="%4$s" style="width:100%%;max-width:460px;height:%5$dpx;border:1px solid #dcdcde;background:#fff" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
+				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="3">%2$s<iframe data-src="%3$s" title="%4$s" style="height:%5$dpx" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
 				esc_attr( $panel_id ),
 				'<p data-cabintale-loading class="description">' . esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ) . '</p>',
 				esc_url( self::preview_url( $widget ) ),

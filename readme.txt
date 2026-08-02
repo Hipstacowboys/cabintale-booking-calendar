@@ -108,6 +108,7 @@ Example: `[cabintale_widget type="service" border="0"]`
 == Changelog ==
 
 = 0.3.0 =
+* Cabintale branding on the settings screen, layered over standard WordPress admin components so it still follows your admin colour scheme.
 * Settings screen rebuilt: it now explains what lives in Cabintale and what lives in WordPress, and only shows instructions once they can be acted on.
 * Preview any widget from the settings screen before putting it on a page.
 * Connect, Disconnect and Create booking page now show progress instead of sitting silent for a second.
