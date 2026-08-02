@@ -131,6 +131,37 @@
 	cursor: default;
 }
 
+/* ── Icons ───────────────────────────────────────────────────────────────── */
+
+.cbt-settings .button .dashicons,
+.cbt-settings td .dashicons,
+.cbt-settings a .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+	line-height: 1;
+	vertical-align: middle;
+	position: relative;
+	top: -1px;
+}
+
+/* Gap between an icon and the label it belongs to, in either order. */
+.cbt-settings .button .dashicons:first-child {
+	margin-right: 5px;
+}
+
+.cbt-settings .button .dashicons:last-child,
+.cbt-settings a .dashicons:last-child {
+	margin-left: 5px;
+}
+
+.cbt-settings .cbt-connected .dashicons-yes-alt {
+	margin-right: 2px;
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
 /* ── Tables ──────────────────────────────────────────────────────────────── */
 
 .cbt-settings .widefat {
@@ -188,9 +219,14 @@
 	color: var(--cbt-muted);
 }
 
-/* Push the disconnect button to the far edge on roomy screens, let it wrap
-   underneath when there is no room. */
-.cbt-connected__action {
+/* Push the actions to the far edge on roomy screens, let them wrap underneath
+   when there is no room. Scoped under .cbt-settings so core's own .button
+   margins cannot win the specificity argument. */
+.cbt-settings .cbt-connected__actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
 	margin-left: auto;
 }
 
@@ -209,7 +245,7 @@
 		padding: 16px;
 	}
 
-	.cbt-connected__action {
+	.cbt-settings .cbt-connected__actions {
 		margin-left: 0;
 	}
 }
@@ -234,17 +270,30 @@
 	color: var(--cbt-muted);
 }
 
+.cbt-settings .cbt-shortcode-cell {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
 .cbt-settings .cbt-shortcode {
-	display: inline-block;
-	max-width: 22em;
+	flex: 1 1 auto;
+	/* min-width:0 is what actually lets a flex item shrink below its content
+	   width — without it the code string pushes the Copy button onto its own
+	   line. */
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	vertical-align: middle;
+	padding: 4px 8px;
 	/* Label step. 12px is only sanctioned for KPI labels with letter-spacing,
-	   which this is not — the width is handled by the ellipsis, not by shrinking
+	   which this is not — width is handled by the ellipsis, not by shrinking
 	   the text below the ramp. */
 	font-size: 13px;
+}
+
+.cbt-settings .cbt-shortcode-cell .button {
+	flex: 0 0 auto;
 }
 
 /* The widget's own name leads; its property or service sits under it, quiet. */
@@ -266,4 +315,14 @@
 	max-width: var(--cbt-width);
 	margin-left: 20px;
 	list-style: disc;
+}
+
+/* ── Widgets card rhythm ─────────────────────────────────────────────────── */
+
+.cbt-settings .cbt-widgets-table {
+	margin: 14px 0 18px;
+}
+
+.cbt-settings .widefat td {
+	vertical-align: middle;
 }

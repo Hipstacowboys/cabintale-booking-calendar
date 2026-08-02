@@ -240,7 +240,7 @@ class Settings {
 
 			if ( '' !== $row[2] ) {
 				printf(
-					'<span class="dashicons dashicons-external" aria-hidden="true" style="font-size:16px;width:16px;height:16px;vertical-align:text-bottom"></span> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+					'<span class="dashicons dashicons-external" aria-hidden="true"></span><a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
 					esc_url( $row[2] ),
 					esc_html( $row[1] )
 				);
@@ -386,7 +386,7 @@ class Settings {
 			echo '<div class="cbt-connected">';
 
 			printf(
-				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span> <strong>%s</strong><span class="cbt-connected__meta">%s</span>',
+				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span><strong>%s</strong><span class="cbt-connected__meta">%s</span>',
 				esc_html( '' !== $account ? $account : __( 'Connected', 'cabintale-booking-calendar' ) ),
 				esc_html(
 					sprintf(
@@ -397,14 +397,22 @@ class Settings {
 				)
 			);
 
+			echo '<span class="cbt-connected__actions">';
+
 			printf(
-				'<a href="%1$s" class="button cbt-connected__action" data-cabintale-busy="%2$s">%3$s</a>',
+				'<a href="%1$s" class="button button-primary cbt-button-brand" target="_blank" rel="noopener noreferrer">%2$s<span class="dashicons dashicons-external" aria-hidden="true"></span></a>',
+				esc_url( app_url() . '/dashboard' ),
+				esc_html__( 'Go to my Cabintale account', 'cabintale-booking-calendar' )
+			);
+
+			printf(
+				'<a href="%1$s" class="button" data-cabintale-busy="%2$s">%3$s</a>',
 				esc_url( self::action_url( 'disconnect' ) ),
 				esc_attr__( 'Disconnecting…', 'cabintale-booking-calendar' ),
 				esc_html__( 'Disconnect', 'cabintale-booking-calendar' )
 			);
 
-			echo '</div>';
+			echo '</span></div>';
 
 			return;
 		}
@@ -466,7 +474,7 @@ class Settings {
 
 		echo '<p class="description">' . esc_html__( 'How a widget looks, what language it speaks and which fields it asks for are set in Cabintale, per widget.', 'cabintale-booking-calendar' ) . '</p>';
 
-		echo '<div style="overflow-x:auto">';
+		echo '<div class="cbt-widgets-table" style="overflow-x:auto">';
 		echo '<table class="widefat striped"><thead><tr>';
 		echo '<th class="cbt-col-name">' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th>' . esc_html__( 'Shortcode', 'cabintale-booking-calendar' ) . '</th>';
@@ -506,7 +514,7 @@ class Settings {
 			$shortcode = self::shortcode_for( $widget );
 
 			printf(
-				'<td><code class="cbt-shortcode">%1$s</code> <button type="button" class="button button-small" data-cabintale-copy="%2$s" data-cabintale-copied="%3$s">%4$s</button></td>',
+				'<td><span class="cbt-shortcode-cell"><code class="cbt-shortcode">%1$s</code><button type="button" class="button" data-cabintale-copy="%2$s" data-cabintale-copied="%3$s">%4$s</button></span></td>',
 				esc_html( $shortcode ),
 				esc_attr( $shortcode ),
 				esc_attr__( 'Copied', 'cabintale-booking-calendar' ),
@@ -520,8 +528,8 @@ class Settings {
 			// from WordPress).
 			printf(
 				'<td class="cbt-actions">'
-					. '<button type="button" class="button" aria-expanded="false" aria-controls="%1$s" data-cabintale-preview="%2$s"><span class="dashicons dashicons-visibility" aria-hidden="true" style="vertical-align:text-bottom"></span> %3$s</button>'
-					. '<a href="%4$s" class="button button-primary" target="_blank" rel="noopener noreferrer">%5$s <span class="dashicons dashicons-external" aria-hidden="true" style="font-size:14px;width:14px;height:14px;vertical-align:text-bottom"></span></a>'
+					. '<button type="button" class="button" aria-expanded="false" aria-controls="%1$s" data-cabintale-preview="%2$s"><span class="dashicons dashicons-visibility" aria-hidden="true"></span>%3$s</button>'
+					. '<a href="%4$s" class="button button-primary" target="_blank" rel="noopener noreferrer">%5$s<span class="dashicons dashicons-external" aria-hidden="true"></span></a>'
 				. '</td>',
 				esc_attr( $panel_id ),
 				/* translators: %s: widget name. */
