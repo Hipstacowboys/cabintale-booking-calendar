@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,8 @@ Yes. Cabintale is a booking system for cabins, cottages and small rentals, and t
 
 This plugin connects to Cabintale, the booking service that stores your places, availability and widgets. It is required for the plugin to do anything.
 
+**If you connect your account,** this site stores a read-only access token and uses it to ask Cabintale for the list of your widgets, so you can pick one by name. Those requests come from your server, not from your visitors' browsers, and no visitor data is involved. Connecting is optional.
+
 **What is sent, and when:** on a page where you have placed a Cabintale widget, the visitor's browser loads the widget script from `admin.cabintale.com` and displays the widget in an iframe served from the same domain. As with any embedded content, that request includes the visitor's IP address and browser user agent. If the visitor makes a booking, the details they type into the widget are submitted to Cabintale.
 
 Nothing is sent to Cabintale from your WordPress admin, and the plugin makes no requests at all on pages without a widget.
@@ -44,14 +46,22 @@ Service provided by Cabintale: [cabintale.com](https://cabintale.com/) — [term
 == Installation ==
 
 1. Install and activate the plugin.
-2. Go to **Settings → Cabintale** and paste your widget ID. You will find it in the embed code shown next to your widget in Cabintale.
-3. Edit a page, add the **Cabintale booking widget** block, and publish.
+2. Go to **Settings → Cabintale** and click **Connect to Cabintale**. Sign in, or create a free account — the sign-up walks you through adding your place, prices and availability, and makes your first widget for you.
+3. Back in WordPress, click **Create my booking page** — or add the **Cabintale booking widget** block to any page and pick a widget from the list.
 
-You can skip step 2 and set a widget ID directly on each block instead.
+Prefer not to connect? Paste a widget ID under "Use a widget ID instead" and skip the rest.
 
 == Frequently Asked Questions ==
 
-= Where do I find my widget ID? =
+= Do I have to copy a widget ID? =
+
+No. Connect your account under Settings → Cabintale and your widgets appear in a dropdown, by name. The ID field is still there if you prefer it.
+
+= What can this plugin see in my Cabintale account? =
+
+Only the names of your places, services and widgets. The connection is read-only: it cannot see your bookings, guests or payments, and it cannot change anything. You can disconnect it at any time from Settings → Cabintale or from your Cabintale settings.
+
+= Where do I find my widget ID, if I want to use one? =
 
 Log in to Cabintale, open the widget you want to show, and copy the ID from its embed code. It looks like `3f8a1c22-9b41-4d0e-8a77-2c1f9e5d4b60`.
 
@@ -96,6 +106,11 @@ Example: `[cabintale_widget type="service" border="0"]`
 4. Settings → Cabintale, where the default widget is saved.
 
 == Changelog ==
+
+= 0.2.0 =
+* Connect your Cabintale account and pick widgets by name instead of copying IDs.
+* One-click "Create my booking page".
+* Choosing a widget now sets its type automatically.
 
 = 0.1.0 =
 * First release: Cabintale booking widget block, `[cabintale_widget]` shortcode, and a default-widget setting.

@@ -31,7 +31,7 @@ class Block {
 		wp_register_script(
 			EDITOR_HANDLE,
 			PLUGIN_URL . 'assets/js/editor.js',
-			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n' ),
+			array( 'wp-blocks', 'wp-element', 'wp-block-editor', 'wp-components', 'wp-i18n', 'wp-api-fetch' ),
 			VERSION,
 			true
 		);

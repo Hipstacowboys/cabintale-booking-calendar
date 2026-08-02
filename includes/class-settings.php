@@ -93,41 +93,45 @@ class Settings {
 		<div class="wrap">
 			<h1><?php echo esc_html__( 'Cabintale', 'cabintale-booking-calendar' ); ?></h1>
 
-			<p>
-				<?php echo esc_html__( 'Set a default widget so the Cabintale block is ready to use without pasting an ID every time. You can still override it on any individual block.', 'cabintale-booking-calendar' ); ?>
-			</p>
+			<?php self::render_status(); ?>
+			<?php self::render_connection(); ?>
 
-			<form method="post" action="options.php">
-				<?php settings_fields( self::PAGE_SLUG ); ?>
+			<details<?php echo Connect::is_connected() ? '' : ' open'; ?>>
+				<summary><?php echo esc_html__( 'Use a widget ID instead', 'cabintale-booking-calendar' ); ?></summary>
 
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row">
-							<label for="cabintale_default_widget_token">
-								<?php echo esc_html__( 'Default widget ID', 'cabintale-booking-calendar' ); ?>
-							</label>
-						</th>
-						<td>
-							<input
-								type="text"
-								class="regular-text code"
-								id="cabintale_default_widget_token"
-								name="<?php echo esc_attr( self::OPTION_TOKEN ); ?>"
-								value="<?php echo esc_attr( (string) get_option( self::OPTION_TOKEN, '' ) ); ?>"
-								placeholder="00000000-0000-0000-0000-000000000000"
-							/>
-							<p class="description">
-								<?php echo esc_html__( 'In Cabintale, open your widget and copy the ID from its embed code.', 'cabintale-booking-calendar' ); ?>
-								<a href="https://cabintale.com/" target="_blank" rel="noopener noreferrer">
-									<?php echo esc_html__( 'Create a free Cabintale account', 'cabintale-booking-calendar' ); ?>
-								</a>
-							</p>
-						</td>
-					</tr>
-				</table>
+				<p>
+					<?php echo esc_html__( 'If you would rather not connect your account, paste a widget ID here and it becomes the default for new blocks. You can still override it on any individual block.', 'cabintale-booking-calendar' ); ?>
+				</p>
 
-				<?php submit_button(); ?>
-			</form>
+				<form method="post" action="options.php">
+					<?php settings_fields( self::PAGE_SLUG ); ?>
+
+					<table class="form-table" role="presentation">
+						<tr>
+							<th scope="row">
+								<label for="cabintale_default_widget_token">
+									<?php echo esc_html__( 'Default widget ID', 'cabintale-booking-calendar' ); ?>
+								</label>
+							</th>
+							<td>
+								<input
+									type="text"
+									class="regular-text code"
+									id="cabintale_default_widget_token"
+									name="<?php echo esc_attr( self::OPTION_TOKEN ); ?>"
+									value="<?php echo esc_attr( (string) get_option( self::OPTION_TOKEN, '' ) ); ?>"
+									placeholder="00000000-0000-0000-0000-000000000000"
+								/>
+								<p class="description">
+									<?php echo esc_html__( 'In Cabintale, open your widget and copy the ID from its embed code.', 'cabintale-booking-calendar' ); ?>
+								</p>
+							</td>
+						</tr>
+					</table>
+
+					<?php submit_button(); ?>
+				</form>
+			</details>
 
 			<h2><?php echo esc_html__( 'Adding a widget to a page', 'cabintale-booking-calendar' ); ?></h2>
 
@@ -147,6 +151,112 @@ class Settings {
 	}
 
 	/**
+	 * The connect / connected panel — the primary path on this screen.
+	 */
+	private static function render_connection(): void {
+		if ( Connect::is_connected() ) {
+			$widgets = Connect::widgets();
+			$account = Connect::account_name();
+
+			echo '<h2>' . esc_html__( 'Your Cabintale account', 'cabintale-booking-calendar' ) . '</h2>';
+
+			printf(
+				'<p><strong>%s</strong>%s</p>',
+				esc_html( '' !== $account ? $account : __( 'Connected', 'cabintale-booking-calendar' ) ),
+				esc_html(
+					sprintf(
+						/* translators: %d: number of widgets available on the connected account. */
+						_n( ' — %d widget available', ' — %d widgets available', count( $widgets ), 'cabintale-booking-calendar' ),
+						count( $widgets )
+					)
+				)
+			);
+
+			echo '<p>';
+
+			if ( $widgets ) {
+				printf(
+					'<a href="%s" class="button button-primary">%s</a> ',
+					esc_url( self::action_url( 'create_page' ) ),
+					esc_html__( 'Create my booking page', 'cabintale-booking-calendar' )
+				);
+			}
+
+			printf(
+				'<a href="%s" class="button">%s</a>',
+				esc_url( self::action_url( 'disconnect' ) ),
+				esc_html__( 'Disconnect', 'cabintale-booking-calendar' )
+			);
+
+			echo '</p>';
+
+			echo '<p class="description">' . esc_html__( 'Add the Cabintale block to any page and pick a widget from the list — no IDs to copy.', 'cabintale-booking-calendar' ) . '</p>';
+
+			return;
+		}
+
+		echo '<h2>' . esc_html__( 'Connect your Cabintale account', 'cabintale-booking-calendar' ) . '</h2>';
+
+		echo '<p>' . esc_html__( 'Connecting lets you pick your widgets by name when adding them to a page. If you do not have an account yet, you can create one for free during the next step — it takes a couple of minutes and sets up your first availability calendar.', 'cabintale-booking-calendar' ) . '</p>';
+
+		printf(
+			'<p><a href="%s" class="button button-primary">%s</a></p>',
+			esc_url( self::action_url( 'connect' ) ),
+			esc_html__( 'Connect to Cabintale', 'cabintale-booking-calendar' )
+		);
+
+		echo '<p class="description">' . esc_html__( 'You will be asked to approve the connection in Cabintale. It can only read the names of your places and widgets — never your bookings, guests or payments.', 'cabintale-booking-calendar' ) . '</p>';
+	}
+
+	/**
+	 * Outcome of whatever the owner just did. Kept out of admin_notices so it
+	 * appears in the flow of this screen rather than above the page title.
+	 */
+	private static function render_status(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- display-only, no state change.
+		$status = isset( $_GET['cabintale_status'] ) ? sanitize_key( wp_unslash( $_GET['cabintale_status'] ) ) : '';
+
+		if ( '' === $status ) {
+			return;
+		}
+
+		$messages = array(
+			'connected'      => array( 'success', __( 'Connected. Your widgets are now available in the Cabintale block.', 'cabintale-booking-calendar' ) ),
+			'disconnected'   => array( 'success', __( 'Disconnected. Widgets already on your pages keep working.', 'cabintale-booking-calendar' ) ),
+			'cancelled'      => array( 'info', __( 'Connection cancelled. Nothing was changed.', 'cabintale-booking-calendar' ) ),
+			'expired'        => array( 'warning', __( 'That connection attempt timed out. Please start again.', 'cabintale-booking-calendar' ) ),
+			'state_mismatch' => array( 'error', __( 'The response did not match the request that started it, so it was ignored. Please start again.', 'cabintale-booking-calendar' ) ),
+			'network'        => array( 'error', __( 'Could not reach Cabintale. Check your connection and try again.', 'cabintale-booking-calendar' ) ),
+			'rejected'       => array( 'error', __( 'Cabintale did not accept the connection. Please start again.', 'cabintale-booking-calendar' ) ),
+			'no_widgets'     => array( 'warning', __( 'There are no widgets on your Cabintale account yet. Create one in Cabintale, then try again.', 'cabintale-booking-calendar' ) ),
+			'page_failed'    => array( 'error', __( 'The page could not be created. You can add the Cabintale block to a page yourself instead.', 'cabintale-booking-calendar' ) ),
+		);
+
+		if ( ! isset( $messages[ $status ] ) ) {
+			return;
+		}
+
+		printf(
+			'<div class="notice notice-%1$s"><p>%2$s</p></div>',
+			esc_attr( $messages[ $status ][0] ),
+			esc_html( $messages[ $status ][1] )
+		);
+	}
+
+	private static function action_url( string $action ): string {
+		return wp_nonce_url(
+			add_query_arg(
+				array(
+					'page'             => self::PAGE_SLUG,
+					'cabintale_action' => $action,
+				),
+				admin_url( 'options-general.php' )
+			),
+			'cabintale_' . $action
+		);
+	}
+
+	/**
 	 * One dismissible pointer to the settings screen, shown until a default
 	 * widget exists. Self-dismisses on save, so it cannot become a permanent ad.
 	 */
@@ -159,7 +269,8 @@ class Settings {
 			return;
 		}
 
-		if ( get_option( self::OPTION_TOKEN ) ) {
+		// Either route out of setup counts: a connected account or a pasted ID.
+		if ( get_option( self::OPTION_TOKEN ) || Connect::is_connected() ) {
 			delete_option( self::OPTION_NEEDS_SETUP );
 
 			return;
