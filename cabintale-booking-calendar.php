@@ -3,7 +3,7 @@
  * Plugin Name:       Cabintale Booking Calendar
  * Plugin URI:        https://cabintale.com/
  * Description:       Show live availability and take bookings for your cabin, cottage or rental with a Cabintale widget — as a block or a shortcode.
- * Version:           0.3.0
+ * Version:           0.4.0
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Cabintale
@@ -25,7 +25,7 @@ namespace Cabintale\BookingCalendar;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION  = '0.3.0';
+const VERSION  = '0.4.0';
 const SLUG     = 'cabintale-booking-calendar';
 const TEXT_DOM = 'cabintale-booking-calendar';
 
@@ -65,6 +65,21 @@ function app_url(): string {
 	$url = (string) apply_filters( 'cabintale_app_url', $url );
 
 	return untrailingslashit( $url );
+}
+
+/**
+ * Where the Cabintale documentation lives.
+ *
+ * A different host from app_url(): the app is admin.cabintale.com, the docs are
+ * on the marketing site. Kept in one place so a move needs one edit.
+ *
+ * @param string $path Path under /docs, with no leading slash.
+ */
+function docs_url( string $path = '' ): string {
+	$base = defined( 'CABINTALE_DOCS_URL' ) ? CABINTALE_DOCS_URL : 'https://www.cabintale.com/docs';
+	$base = untrailingslashit( (string) apply_filters( 'cabintale_docs_url', $base ) );
+
+	return '' === $path ? $base : $base . '/' . ltrim( $path, '/' );
 }
 
 /**

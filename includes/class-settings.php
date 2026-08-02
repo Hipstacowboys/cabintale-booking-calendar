@@ -208,18 +208,25 @@ class Settings {
 	 * navigation names them, so the click lands on a familiar word.
 	 */
 	private static function render_where_to_change(): void {
+		// Only guides that were verified to exist are linked — a help link that
+		// 404s is worse than no help link.
 		$rows = array(
-			array( __( 'Prices, availability, blocked dates, seasonal pricing', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places' ),
-			array( __( 'Calendar sync with Airbnb, Booking.com and other platforms (iCal)', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places' ),
-			array( __( 'Services and time slots', 'cabintale-booking-calendar' ), __( 'Cabintale → Services', 'cabintale-booking-calendar' ), app_url() . '/services' ),
-			array( __( 'Widget language and look', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places' ),
-			array( __( 'Bookings as they come in', 'cabintale-booking-calendar' ), __( 'Cabintale → Dashboard', 'cabintale-booking-calendar' ), app_url() . '/dashboard' ),
-			array( __( 'Which widget appears on which page', 'cabintale-booking-calendar' ), __( 'Here, in WordPress', 'cabintale-booking-calendar' ), '' ),
-			array( __( 'Border, and hiding the booking form', 'cabintale-booking-calendar' ), __( 'Block settings on the page', 'cabintale-booking-calendar' ), '' ),
+			array( __( 'Prices, availability, blocked dates, seasonal pricing', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places', docs_url( 'get-set-up/seasonal-pricing' ) ),
+			array( __( 'Calendar sync with Airbnb, Booking.com and other platforms (iCal)', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places', docs_url( 'connect-channels/ical-export' ) ),
+			array( __( 'Services and time slots', 'cabintale-booking-calendar' ), __( 'Cabintale → Services', 'cabintale-booking-calendar' ), app_url() . '/services', '' ),
+			array( __( 'Widget language, look and booking form', 'cabintale-booking-calendar' ), __( 'Cabintale → the widget', 'cabintale-booking-calendar' ), app_url() . '/places', docs_url( 'customize-site/embeddable-widget' ) ),
+			array( __( 'Property name, timezone and currency', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places', docs_url( 'get-set-up/property-basics' ) ),
+			array( __( 'Bookings as they come in', 'cabintale-booking-calendar' ), __( 'Cabintale → Dashboard', 'cabintale-booking-calendar' ), app_url() . '/dashboard', '' ),
+			array( __( 'Which widget appears on which page', 'cabintale-booking-calendar' ), __( 'Here, in WordPress', 'cabintale-booking-calendar' ), '', '' ),
+			array( __( 'Border, and hiding the booking form', 'cabintale-booking-calendar' ), __( 'Block settings on the page', 'cabintale-booking-calendar' ), '', '' ),
 		);
 
 		echo '<h2>' . esc_html__( 'Where to change what', 'cabintale-booking-calendar' ) . '</h2>';
-		echo '<div style="overflow-x:auto"><table class="widefat striped" style="max-width:46em"><tbody>';
+		echo '<div style="overflow-x:auto"><table class="widefat striped" style="max-width:46em"><thead><tr>';
+		echo '<th>' . esc_html__( 'What', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th>' . esc_html__( 'Where', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th>' . esc_html__( 'Guide', 'cabintale-booking-calendar' ) . '</th>';
+		echo '</tr></thead><tbody>';
 
 		foreach ( $rows as $row ) {
 			echo '<tr><td>' . esc_html( $row[0] ) . '</td><td>';
@@ -234,10 +241,49 @@ class Settings {
 				echo esc_html( $row[1] );
 			}
 
+			echo '</td><td>';
+
+			if ( '' !== $row[3] ) {
+				printf(
+					'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+					esc_url( $row[3] ),
+					esc_html__( 'Read', 'cabintale-booking-calendar' )
+				);
+			} else {
+				echo '&mdash;';
+			}
+
 			echo '</td></tr>';
 		}
 
 		echo '</tbody></table></div>';
+
+		self::render_help();
+	}
+
+	/**
+	 * A short way out to the documentation, for the questions this screen does
+	 * not answer.
+	 */
+	private static function render_help(): void {
+		$links = array(
+			array( __( 'Getting started in 30 minutes', 'cabintale-booking-calendar' ), docs_url( 'getting-started/welcome-and-first-steps' ) ),
+			array( __( 'The booking widget explained', 'cabintale-booking-calendar' ), docs_url( 'customize-site/embeddable-widget' ) ),
+			array( __( 'All Cabintale documentation', 'cabintale-booking-calendar' ), docs_url() ),
+		);
+
+		echo '<h2>' . esc_html__( 'Help', 'cabintale-booking-calendar' ) . '</h2>';
+		echo '<ul style="list-style:disc;margin-left:20px;max-width:46em">';
+
+		foreach ( $links as $link ) {
+			printf(
+				'<li><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></li>',
+				esc_url( $link[1] ),
+				esc_html( $link[0] )
+			);
+		}
+
+		echo '</ul>';
 	}
 
 	/**
@@ -418,11 +464,14 @@ class Settings {
 			esc_html__( 'Create booking page', 'cabintale-booking-calendar' )
 		);
 
+		echo '<p class="description">' . esc_html__( 'How a widget looks, what language it speaks and which fields it asks for are set in Cabintale, per widget.', 'cabintale-booking-calendar' ) . '</p>';
+
 		echo '<div style="overflow-x:auto">';
 		echo '<table class="widefat striped"><thead><tr>';
 		echo '<th>' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th>' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th>' . esc_html__( 'Preview', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th>' . esc_html__( 'Set up', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
 		$index = 0;
@@ -448,13 +497,24 @@ class Settings {
 				esc_html__( 'Preview', 'cabintale-booking-calendar' )
 			);
 
+			// Styling, language and behaviour are widget settings, so they are
+			// changed in Cabintale. The link carries only the widget token; the
+			// editor URL is resolved there from the owner's session (see
+			// WidgetEditRedirectController for why the place token stays away
+			// from WordPress).
+			printf(
+				'<td><a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s <span class="dashicons dashicons-external" aria-hidden="true" style="font-size:14px;width:14px;height:14px;vertical-align:text-bottom"></span></a></td>',
+				esc_url( app_url() . '/connect/widget/' . rawurlencode( $widget['token'] ) . '/edit' ),
+				esc_html__( 'Style &amp; language', 'cabintale-booking-calendar' )
+			);
+
 			echo '</tr>';
 
 			// The preview panel is a sibling row so it can span the table, and it
 			// carries no src until opened — see assets/js/settings.js for why the
 			// first request is deliberately user-initiated.
 			printf(
-				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="3">%2$s<iframe data-src="%3$s" title="%4$s" style="height:%5$dpx" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
+				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="4">%2$s<iframe data-src="%3$s" title="%4$s" style="height:%5$dpx" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
 				esc_attr( $panel_id ),
 				'<p data-cabintale-loading class="description">' . esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ) . '</p>',
 				esc_url( self::preview_url( $widget ) ),
