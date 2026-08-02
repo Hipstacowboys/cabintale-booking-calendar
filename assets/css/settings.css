@@ -241,7 +241,10 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	vertical-align: middle;
-	font-size: 12px;
+	/* Label step. 12px is only sanctioned for KPI labels with letter-spacing,
+	   which this is not — the width is handled by the ellipsis, not by shrinking
+	   the text below the ramp. */
+	font-size: 13px;
 }
 
 /* The widget's own name leads; its property or service sits under it, quiet. */
