@@ -21,6 +21,9 @@
 	--cbt-line: #EBEBE5;
 	--cbt-card: #FBFBF8;
 	--cbt-muted: #6F6F6F;
+	/* Roomy enough for a four-column table without crowding, still short enough
+	   that prose lines stay readable. */
+	--cbt-width: 64em;
 }
 
 /* ── Header band ─────────────────────────────────────────────────────────── */
@@ -32,7 +35,7 @@
 	flex-wrap: wrap;
 	margin: 16px 0 20px;
 	padding: 18px 20px;
-	max-width: 46em;
+	max-width: var(--cbt-width);
 	background: var(--cbt-ink);
 	border-radius: 12px;
 }
@@ -141,7 +144,7 @@
 /* ── Disclosures ─────────────────────────────────────────────────────────── */
 
 .cbt-settings details {
-	max-width: 46em;
+	max-width: var(--cbt-width);
 	margin: 0 0 10px;
 	padding: 12px 16px;
 	background: #fff;
@@ -166,7 +169,7 @@
 	align-items: center;
 	gap: 10px;
 	flex-wrap: wrap;
-	max-width: 46em;
+	max-width: var(--cbt-width);
 	margin: 0 0 20px;
 	padding: 12px 16px;
 	background: #fff;
@@ -206,4 +209,36 @@
 	.cbt-connected__action {
 		margin-left: 0;
 	}
+}
+
+/* ── Widget table actions ────────────────────────────────────────────────── */
+
+.cbt-settings .cbt-actions {
+	white-space: nowrap;
+	width: 1%;
+}
+
+.cbt-settings .cbt-actions .button + .button {
+	margin-left: 6px;
+}
+
+/* The widget's own name leads; its property or service sits under it, quiet. */
+.cbt-widget-name {
+	font-weight: 600;
+	color: var(--cbt-ink);
+}
+
+.cbt-widget-parent {
+	display: block;
+	margin-top: 2px;
+	font-size: 13px;
+	color: var(--cbt-muted);
+}
+
+/* ── Help list ───────────────────────────────────────────────────────────── */
+
+.cbt-settings .cbt-help {
+	max-width: var(--cbt-width);
+	margin-left: 20px;
+	list-style: disc;
 }

@@ -222,7 +222,7 @@ class Settings {
 		);
 
 		echo '<h2>' . esc_html__( 'Where to change what', 'cabintale-booking-calendar' ) . '</h2>';
-		echo '<div style="overflow-x:auto"><table class="widefat striped" style="max-width:46em"><thead><tr>';
+		echo '<div style="overflow-x:auto"><table class="widefat striped"><thead><tr>';
 		echo '<th>' . esc_html__( 'What', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th>' . esc_html__( 'Where', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th>' . esc_html__( 'Guide', 'cabintale-booking-calendar' ) . '</th>';
@@ -273,7 +273,7 @@ class Settings {
 		);
 
 		echo '<h2>' . esc_html__( 'Help', 'cabintale-booking-calendar' ) . '</h2>';
-		echo '<ul style="list-style:disc;margin-left:20px;max-width:46em">';
+		echo '<ul class="cbt-help">';
 
 		foreach ( $links as $link ) {
 			printf(
@@ -349,7 +349,7 @@ class Settings {
 		<details>
 			<summary><?php echo esc_html__( 'Shortcode options', 'cabintale-booking-calendar' ); ?></summary>
 
-			<table class="widefat striped" style="max-width:46em">
+			<table class="widefat striped">
 				<tbody>
 					<tr><td><code>token</code></td><td><?php echo esc_html__( 'A specific widget ID. Defaults to the one above.', 'cabintale-booking-calendar' ); ?></td></tr>
 					<tr><td><code>type</code></td><td><?php echo esc_html__( 'property, service or checkout. Must match the widget.', 'cabintale-booking-calendar' ); ?></td></tr>
@@ -403,7 +403,7 @@ class Settings {
 		}
 
 		?>
-		<div class="card" style="max-width:46em">
+		<div class="card">
 			<h2 class="title" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
 				<span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span>
 				<?php echo esc_html__( 'Connect your Cabintale account', 'cabintale-booking-calendar' ); ?>
@@ -442,7 +442,7 @@ class Settings {
 	private static function render_widgets(): void {
 		$widgets = Connect::widgets();
 
-		echo '<div class="card" style="max-width:46em">';
+		echo '<div class="card">';
 		echo '<h2 class="title">' . esc_html__( 'Your widgets', 'cabintale-booking-calendar' ) . '</h2>';
 
 		if ( ! $widgets ) {
@@ -470,8 +470,7 @@ class Settings {
 		echo '<table class="widefat striped"><thead><tr>';
 		echo '<th>' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th>' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th>' . esc_html__( 'Preview', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th>' . esc_html__( 'Set up', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th class="cbt-actions">' . esc_html__( 'Actions', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
 		$index = 0;
@@ -479,23 +478,29 @@ class Settings {
 		foreach ( $widgets as $widget ) {
 			$index++;
 			$panel_id = 'cabintale-preview-' . $index;
-			$label    = trim( ( $widget['group'] ? $widget['group'] . ' — ' : '' ) . $widget['name'] );
+			$name     = trim( (string) $widget['name'] );
+			$parent   = trim( (string) $widget['group'] );
 
-			if ( '' === $label ) {
-				$label = __( 'Untitled widget', 'cabintale-booking-calendar' );
+			if ( '' === $name ) {
+				$name = '' !== $parent ? $parent : __( 'Untitled widget', 'cabintale-booking-calendar' );
 			}
 
+			// Widgets are often named after the property they belong to
+			// ("Mountain Cabin – Widget"), so printing both produced
+			// "Mountain Cabin — Mountain Cabin – Widget". Only show the parent
+			// when it adds something the name does not already say.
+			$show_parent = '' !== $parent && false === stripos( $name, $parent );
+			$label       = $show_parent ? $parent . ' — ' . $name : $name;
+
 			echo '<tr>';
-			printf( '<td>%s</td>', esc_html( $label ) );
-			printf( '<td>%s</td>', esc_html( self::kind_label( $widget['kind'] ) ) );
 
 			printf(
-				'<td><button type="button" class="button button-small" aria-expanded="false" aria-controls="%1$s" data-cabintale-preview="%2$s"><span class="dashicons dashicons-visibility" aria-hidden="true" style="vertical-align:text-bottom"></span> %3$s</button></td>',
-				esc_attr( $panel_id ),
-				/* translators: %s: widget name. */
-				esc_attr( sprintf( __( 'Loading preview of %s', 'cabintale-booking-calendar' ), $label ) ),
-				esc_html__( 'Preview', 'cabintale-booking-calendar' )
+				'<td><span class="cbt-widget-name">%s</span>%s</td>',
+				esc_html( $name ),
+				$show_parent ? '<span class="cbt-widget-parent">' . esc_html( $parent ) . '</span>' : ''
 			);
+
+			printf( '<td>%s</td>', esc_html( self::kind_label( $widget['kind'] ) ) );
 
 			// Styling, language and behaviour are widget settings, so they are
 			// changed in Cabintale. The link carries only the widget token; the
@@ -503,10 +508,18 @@ class Settings {
 			// WidgetEditRedirectController for why the place token stays away
 			// from WordPress).
 			printf(
-				'<td><a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s <span class="dashicons dashicons-external" aria-hidden="true" style="font-size:14px;width:14px;height:14px;vertical-align:text-bottom"></span></a></td>',
+				'<td class="cbt-actions">'
+					. '<button type="button" class="button" aria-expanded="false" aria-controls="%1$s" data-cabintale-preview="%2$s"><span class="dashicons dashicons-visibility" aria-hidden="true" style="vertical-align:text-bottom"></span> %3$s</button>'
+					. '<a href="%4$s" class="button button-primary" target="_blank" rel="noopener noreferrer">%5$s <span class="dashicons dashicons-external" aria-hidden="true" style="font-size:14px;width:14px;height:14px;vertical-align:text-bottom"></span></a>'
+				. '</td>',
+				esc_attr( $panel_id ),
+				/* translators: %s: widget name. */
+				esc_attr( sprintf( __( 'Loading preview of %s', 'cabintale-booking-calendar' ), $label ) ),
+				esc_html__( 'Preview', 'cabintale-booking-calendar' ),
 				esc_url( app_url() . '/connect/widget/' . rawurlencode( $widget['token'] ) . '/edit' ),
 				esc_html__( 'Style &amp; language', 'cabintale-booking-calendar' )
 			);
+
 
 			echo '</tr>';
 
@@ -514,7 +527,7 @@ class Settings {
 			// carries no src until opened — see assets/js/settings.js for why the
 			// first request is deliberately user-initiated.
 			printf(
-				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="4">%2$s<iframe data-src="%3$s" title="%4$s" style="height:%5$dpx" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
+				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="3">%2$s<iframe data-src="%3$s" title="%4$s" style="height:%5$dpx" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
 				esc_attr( $panel_id ),
 				'<p data-cabintale-loading class="description">' . esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ) . '</p>',
 				esc_url( self::preview_url( $widget ) ),
