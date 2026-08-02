@@ -477,7 +477,7 @@ class Settings {
 		echo '<div class="cbt-widgets-table" style="overflow-x:auto">';
 		echo '<table class="widefat striped"><thead><tr>';
 		echo '<th class="cbt-col-name">' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th>' . esc_html__( 'Shortcode', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th class="cbt-col-shortcode">' . esc_html__( 'Shortcode', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th class="cbt-actions">' . esc_html__( 'Actions', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
@@ -514,7 +514,7 @@ class Settings {
 			$shortcode = self::shortcode_for( $widget );
 
 			printf(
-				'<td><span class="cbt-shortcode-cell"><code class="cbt-shortcode">%1$s</code><button type="button" class="button" data-cabintale-copy="%2$s" data-cabintale-copied="%3$s">%4$s</button></span></td>',
+				'<td class="cbt-col-shortcode"><span class="cbt-shortcode-cell"><code class="cbt-shortcode">%1$s</code><button type="button" class="button" data-cabintale-copy="%2$s" data-cabintale-copied="%3$s">%4$s</button></span></td>',
 				esc_html( $shortcode ),
 				esc_attr( $shortcode ),
 				esc_attr__( 'Copied', 'cabintale-booking-calendar' ),

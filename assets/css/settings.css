@@ -21,9 +21,10 @@
 	--cbt-line: #EBEBE5;
 	--cbt-card: #FBFBF8;
 	--cbt-muted: #6F6F6F;
-	/* Roomy enough for a four-column table without crowding, still short enough
-	   that prose lines stay readable. */
-	--cbt-width: 64em;
+	/* In px, not em: wp-admin's base font is 13px, so an em value here silently
+	   resolves ~20% narrower than it reads, which is what kept starving the
+	   widgets table. */
+	--cbt-width: 1080px;
 }
 
 /* ── Header band ─────────────────────────────────────────────────────────── */
@@ -167,7 +168,6 @@
 .cbt-settings .widefat {
 	border-color: var(--cbt-line);
 	border-radius: 8px;
-	overflow: hidden;
 }
 
 .cbt-settings .widefat thead th {
@@ -252,9 +252,16 @@
 
 /* ── Widget table actions ────────────────────────────────────────────────── */
 
+.cbt-settings .cbt-widgets-table table {
+	table-layout: fixed;
+	width: 100%;
+	/* Below this the buttons would be crushed, so the wrapper scrolls instead. */
+	min-width: 760px;
+}
+
 .cbt-settings .cbt-actions {
 	white-space: nowrap;
-	width: 1%;
+	width: 330px;
 }
 
 .cbt-settings .cbt-actions .button + .button {
@@ -262,12 +269,12 @@
 }
 
 .cbt-settings .cbt-col-name {
-	width: 40%;
+	width: 240px;
 }
 
-.cbt-settings .cbt-col-shows {
-	width: auto;
-	color: var(--cbt-muted);
+.cbt-settings .cbt-col-shortcode {
+	/* Takes whatever is left; the code inside truncates rather than widening. */
+	overflow: hidden;
 }
 
 .cbt-settings .cbt-shortcode-cell {
