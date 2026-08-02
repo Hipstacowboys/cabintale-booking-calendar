@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.4.2
+Stable tag: 0.5.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -106,6 +106,10 @@ Example: `[cabintale_widget type="service" border="0"]`
 4. Settings → Cabintale: connected account, widget list and live preview.
 
 == Changelog ==
+
+= 0.5.0 =
+* Every widget now shows its own shortcode with a copy button — the path that works in Elementor, Bricks, Divi, the classic editor and theme templates.
+* "Create booking page" is now a secondary shortcut called "Create a starter page", and says plainly that it uses your theme default layout.
 
 = 0.4.2 =
 * Fixed the widgets table being squeezed into a narrow column.

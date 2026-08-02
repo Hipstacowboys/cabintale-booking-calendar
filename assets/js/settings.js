@@ -122,8 +122,65 @@
 		}
 	}
 
+	/**
+	 * Copy a widget's shortcode. This is the action that works in every editor
+	 * — Elementor, Bricks, Divi, classic, block — so it is the one most people
+	 * will actually use.
+	 */
+	function bindCopyButtons() {
+		var buttons = document.querySelectorAll( '[data-cabintale-copy]' );
+
+		Array.prototype.forEach.call( buttons, function ( button ) {
+			button.addEventListener( 'click', function () {
+				var text = button.getAttribute( 'data-cabintale-copy' );
+				var done = button.getAttribute( 'data-cabintale-copied' );
+				var original = button.textContent;
+
+				function confirmCopy() {
+					button.textContent = done;
+					speak( done );
+
+					window.setTimeout( function () {
+						button.textContent = original;
+					}, 2000 );
+				}
+
+				if ( navigator.clipboard && navigator.clipboard.writeText ) {
+					navigator.clipboard.writeText( text ).then( confirmCopy, fallback );
+					return;
+				}
+
+				fallback();
+
+				// Older browsers, and any context where the async clipboard is
+				// blocked. The shortcode is visible next to the button either
+				// way, so worst case it can be selected by hand.
+				function fallback() {
+					var field = document.createElement( 'textarea' );
+
+					field.value = text;
+					field.setAttribute( 'readonly', '' );
+					field.style.position = 'absolute';
+					field.style.left = '-9999px';
+					document.body.appendChild( field );
+					field.select();
+
+					try {
+						document.execCommand( 'copy' );
+						confirmCopy();
+					} catch ( e ) {
+						// Leave the label alone — the text is on screen to copy.
+					}
+
+					document.body.removeChild( field );
+				}
+			} );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', function () {
 		bindBusyButtons();
 		bindPreviews();
+		bindCopyButtons();
 	} );
 } )();

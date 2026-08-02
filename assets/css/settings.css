@@ -234,6 +234,16 @@
 	color: var(--cbt-muted);
 }
 
+.cbt-settings .cbt-shortcode {
+	display: inline-block;
+	max-width: 22em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	vertical-align: middle;
+	font-size: 12px;
+}
+
 /* The widget's own name leads; its property or service sits under it, quiet. */
 .cbt-widget-name {
 	font-weight: 600;

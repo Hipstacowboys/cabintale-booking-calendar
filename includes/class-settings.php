@@ -179,6 +179,18 @@ class Settings {
 		<h2><?php echo esc_html__( 'Put a widget on a page', 'cabintale-booking-calendar' ); ?></h2>
 
 		<details open>
+			<summary><?php echo esc_html__( 'Any editor — Elementor, Bricks, Divi, classic, templates', 'cabintale-booking-calendar' ); ?></summary>
+			<ol>
+				<li><?php echo esc_html__( 'Copy the shortcode next to your widget above.', 'cabintale-booking-calendar' ); ?></li>
+				<li><?php echo esc_html__( 'Edit the page you already have, where you want the calendar to appear.', 'cabintale-booking-calendar' ); ?></li>
+				<li><?php echo esc_html__( 'Add a shortcode or text element, paste it in, and save.', 'cabintale-booking-calendar' ); ?></li>
+			</ol>
+			<p class="description">
+				<?php echo esc_html__( 'This keeps your own page design. The widget sits inside it like any other element.', 'cabintale-booking-calendar' ); ?>
+			</p>
+		</details>
+
+		<details>
 			<summary><?php echo esc_html__( 'Block editor', 'cabintale-booking-calendar' ); ?></summary>
 			<ol>
 				<li><?php echo esc_html__( 'Edit the page where you want bookings.', 'cabintale-booking-calendar' ); ?></li>
@@ -190,11 +202,6 @@ class Settings {
 			</p>
 		</details>
 
-		<details>
-			<summary><?php echo esc_html__( 'Elementor, Bricks, classic editor', 'cabintale-booking-calendar' ); ?></summary>
-			<p><?php echo esc_html__( 'Paste this shortcode into any text field. It shows your default widget:', 'cabintale-booking-calendar' ); ?></p>
-			<p><code>[cabintale_widget]</code></p>
-		</details>
 		<?php
 	}
 
@@ -457,19 +464,12 @@ class Settings {
 			return;
 		}
 
-		printf(
-			'<p><a href="%1$s" class="button button-primary cbt-button-brand" data-cabintale-busy="%2$s">%3$s</a></p>',
-			esc_url( self::action_url( 'create_page' ) ),
-			esc_attr__( 'Creating the page…', 'cabintale-booking-calendar' ),
-			esc_html__( 'Create booking page', 'cabintale-booking-calendar' )
-		);
-
 		echo '<p class="description">' . esc_html__( 'How a widget looks, what language it speaks and which fields it asks for are set in Cabintale, per widget.', 'cabintale-booking-calendar' ) . '</p>';
 
 		echo '<div style="overflow-x:auto">';
 		echo '<table class="widefat striped"><thead><tr>';
 		echo '<th class="cbt-col-name">' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th class="cbt-col-shows">' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th>' . esc_html__( 'Shortcode', 'cabintale-booking-calendar' ) . '</th>';
 		echo '<th class="cbt-actions">' . esc_html__( 'Actions', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
@@ -495,12 +495,23 @@ class Settings {
 			echo '<tr>';
 
 			printf(
-				'<td><span class="cbt-widget-name">%s</span>%s</td>',
+				'<td><span class="cbt-widget-name">%s</span><span class="cbt-widget-parent">%s</span></td>',
 				esc_html( $name ),
-				$show_parent ? '<span class="cbt-widget-parent">' . esc_html( $parent ) . '</span>' : ''
+				esc_html( $show_parent ? $parent . ' · ' . self::kind_label( $widget['kind'] ) : self::kind_label( $widget['kind'] ) )
 			);
 
-			printf( '<td class="cbt-col-shows">%s</td>', esc_html( self::kind_label( $widget['kind'] ) ) );
+			// The shortcode is the one instruction that works everywhere —
+			// Elementor, Bricks, Divi, the classic editor, a theme template —
+			// so it is offered per widget rather than buried in Advanced.
+			$shortcode = self::shortcode_for( $widget );
+
+			printf(
+				'<td><code class="cbt-shortcode">%1$s</code> <button type="button" class="button button-small" data-cabintale-copy="%2$s" data-cabintale-copied="%3$s">%4$s</button></td>',
+				esc_html( $shortcode ),
+				esc_attr( $shortcode ),
+				esc_attr__( 'Copied', 'cabintale-booking-calendar' ),
+				esc_html__( 'Copy', 'cabintale-booking-calendar' )
+			);
 
 			// Styling, language and behaviour are widget settings, so they are
 			// changed in Cabintale. The link carries only the widget token; the
@@ -539,7 +550,38 @@ class Settings {
 			);
 		}
 
-		echo '</tbody></table></div></div>';
+		echo '</tbody></table></div>';
+
+		// Demoted from the primary action it used to be. It creates a plain page
+		// on the theme's default template, which is the wrong starting point for
+		// anyone using Elementor, Bricks, Divi or a designed template — and that
+		// is most of this audience. Useful as a shortcut, not as the headline.
+		printf(
+			'<p><a href="%1$s" class="button" data-cabintale-busy="%2$s">%3$s</a></p>',
+			esc_url( self::action_url( 'create_page' ) ),
+			esc_attr__( 'Creating the page…', 'cabintale-booking-calendar' ),
+			esc_html__( 'Create a starter page', 'cabintale-booking-calendar' )
+		);
+
+		echo '<p class="description">' . esc_html__( 'Makes a new page called “Book now” with your first widget on it, using your theme’s default layout. If you already have a page designed, paste the shortcode into it instead.', 'cabintale-booking-calendar' ) . '</p>';
+
+		echo '</div>';
+	}
+
+	/**
+	 * The shortcode for a specific widget. Type is only included when it is not
+	 * the default, so the common case stays short enough to read at a glance.
+	 *
+	 * @param array{kind: string, token: string} $widget Widget row.
+	 */
+	private static function shortcode_for( array $widget ): string {
+		$attributes = 'token="' . $widget['token'] . '"';
+
+		if ( Renderer::KIND_PLACE !== $widget['kind'] ) {
+			$attributes .= ' type="' . $widget['kind'] . '"';
+		}
+
+		return '[cabintale_widget ' . $attributes . ']';
 	}
 
 	/**
