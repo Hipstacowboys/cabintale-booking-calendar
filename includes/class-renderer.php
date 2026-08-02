@@ -45,6 +45,14 @@ class Renderer {
 		$token = isset( $raw['token'] ) ? trim( (string) $raw['token'] ) : '';
 		$kind  = isset( $raw['kind'] ) ? strtolower( (string) $raw['kind'] ) : self::KIND_PLACE;
 
+		// Cabintale's documentation calls a single cabin a "property", while the
+		// app's navigation and this plugin's internals call it a place. Accept
+		// the documented word so someone following the docs is not silently
+		// corrected by the fallback below.
+		if ( 'property' === $kind ) {
+			$kind = self::KIND_PLACE;
+		}
+
 		// No widget chosen here, so fall back to the site default — and take its
 		// kind with it. A widget and its kind always travel together: pairing the
 		// default place widget with someone's leftover "service" would ask

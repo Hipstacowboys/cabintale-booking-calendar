@@ -24,9 +24,30 @@ class Settings {
 
 	public static function init(): void {
 		add_action( 'admin_menu', array( __CLASS__, 'add_page' ) );
+		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_assets' ) );
 		add_action( 'admin_init', array( __CLASS__, 'register_setting' ) );
 		add_action( 'admin_notices', array( __CLASS__, 'setup_notice' ) );
 		add_filter( 'plugin_action_links_' . plugin_basename( PLUGIN_FILE ), array( __CLASS__, 'action_links' ) );
+	}
+
+	/**
+	 * Only on our own screen — a plugin has no business loading assets across
+	 * the whole admin.
+	 *
+	 * @param string $hook Current admin page hook.
+	 */
+	public static function enqueue_assets( string $hook ): void {
+		if ( 'settings_page_' . self::PAGE_SLUG !== $hook ) {
+			return;
+		}
+
+		wp_enqueue_script(
+			'cabintale-bc-settings',
+			PLUGIN_URL . 'assets/js/settings.js',
+			array( 'wp-a11y' ),
+			VERSION,
+			true
+		);
 	}
 
 	public static function add_page(): void {
@@ -114,95 +135,83 @@ class Settings {
 		<div class="wrap">
 			<h1><?php echo esc_html__( 'Cabintale', 'cabintale-booking-calendar' ); ?></h1>
 
-			<?php self::render_status(); ?>
+			<?php
+			self::render_status();
+			self::render_connection();
 
-			<div class="card" style="max-width:46em">
-				<h2 class="title"><?php echo esc_html__( 'How this works', 'cabintale-booking-calendar' ); ?></h2>
-				<p>
-					<?php echo esc_html__( 'Your places, prices, availability and calendar sync live in your Cabintale account. This plugin has one job: putting them on your WordPress pages.', 'cabintale-booking-calendar' ); ?>
-				</p>
-				<p>
-					<?php echo esc_html__( 'Block a date or change a price in Cabintale and your pages show it straight away — there is nothing to update or re-publish here.', 'cabintale-booking-calendar' ); ?>
-				</p>
-			</div>
+			// Placing a widget and knowing where to change things are only
+			// actionable once there is an account behind them. Showing the
+			// instructions first is what made this screen read as a wall of text:
+			// correct information, offered at a moment it cannot be used.
+			if ( Connect::is_connected() ) {
+				self::render_widgets();
+				self::render_usage();
+				self::render_where_to_change();
+			}
 
-			<?php self::render_connection(); ?>
-			<?php self::render_usage(); ?>
-			<?php self::render_where_to_change(); ?>
-			<?php self::render_advanced(); ?>
+			self::render_advanced();
+			?>
 		</div>
 		<?php
 	}
 
 	/**
-	 * Step two: the widget is connected, now get it onto a page.
+	 * Getting a widget onto a page. Two disclosures rather than two stacked
+	 * walls: most people need one of these, never both.
 	 */
 	private static function render_usage(): void {
-		echo '<h2>' . esc_html__( 'Put a widget on a page', 'cabintale-booking-calendar' ) . '</h2>';
+		?>
+		<h2><?php echo esc_html__( 'Put a widget on a page', 'cabintale-booking-calendar' ); ?></h2>
 
-		echo '<p><strong>' . esc_html__( 'Block editor', 'cabintale-booking-calendar' ) . '</strong></p>';
+		<details open>
+			<summary><?php echo esc_html__( 'Block editor', 'cabintale-booking-calendar' ); ?></summary>
+			<ol>
+				<li><?php echo esc_html__( 'Edit the page where you want bookings.', 'cabintale-booking-calendar' ); ?></li>
+				<li><?php echo esc_html__( 'Add the “Cabintale booking widget” block — type /cabintale to find it quickly.', 'cabintale-booking-calendar' ); ?></li>
+				<li><?php echo esc_html__( 'Pick your widget from the dropdown in the block settings, then update the page.', 'cabintale-booking-calendar' ); ?></li>
+			</ol>
+			<p class="description">
+				<?php echo esc_html__( 'While editing you will see a grey card instead of the calendar. That is normal — the widget loads on the published page.', 'cabintale-booking-calendar' ); ?>
+			</p>
+		</details>
 
-		echo '<ol>';
-		printf( '<li>%s</li>', esc_html__( 'Edit the page where you want bookings.', 'cabintale-booking-calendar' ) );
-		printf( '<li>%s</li>', esc_html__( 'Add the “Cabintale booking widget” block — type /cabintale to find it quickly.', 'cabintale-booking-calendar' ) );
-		printf( '<li>%s</li>', esc_html__( 'Pick your widget from the dropdown in the block settings, then update the page.', 'cabintale-booking-calendar' ) );
-		echo '</ol>';
-
-		echo '<p class="description">' . esc_html__( 'While editing you will see a grey card instead of the calendar. That is normal — the real widget appears on the published page.', 'cabintale-booking-calendar' ) . '</p>';
-
-		echo '<p><strong>' . esc_html__( 'Elementor, Bricks, classic editor', 'cabintale-booking-calendar' ) . '</strong></p>';
-
-		echo '<p>' . esc_html__( 'Paste this shortcode into any text field. It shows your default widget:', 'cabintale-booking-calendar' ) . '</p>';
-		echo '<p><code>[cabintale_widget]</code></p>';
+		<details>
+			<summary><?php echo esc_html__( 'Elementor, Bricks, classic editor', 'cabintale-booking-calendar' ); ?></summary>
+			<p><?php echo esc_html__( 'Paste this shortcode into any text field. It shows your default widget:', 'cabintale-booking-calendar' ); ?></p>
+			<p><code>[cabintale_widget]</code></p>
+		</details>
+		<?php
 	}
 
 	/**
 	 * The question this screen kept failing to answer: where do I go to change
 	 * the thing I want to change?
+	 *
+	 * Every plausible hunt target gets a row, because the failure this prevents
+	 * is someone searching WordPress for an availability setting that only
+	 * exists in Cabintale. Destinations are named the way Cabintale's own
+	 * navigation names them, so the click lands on a familiar word.
 	 */
 	private static function render_where_to_change(): void {
 		$rows = array(
-			array(
-				__( 'Prices, availability, blocked dates, seasons', 'cabintale-booking-calendar' ),
-				__( 'Cabintale', 'cabintale-booking-calendar' ),
-				app_url() . '/places',
-			),
-			array(
-				__( 'Sync with Airbnb, Booking.com, Vrbo (iCal)', 'cabintale-booking-calendar' ),
-				__( 'Cabintale', 'cabintale-booking-calendar' ),
-				app_url() . '/places',
-			),
-			array(
-				__( 'Services and time slots', 'cabintale-booking-calendar' ),
-				__( 'Cabintale', 'cabintale-booking-calendar' ),
-				app_url() . '/services',
-			),
-			array(
-				__( 'Bookings that come in', 'cabintale-booking-calendar' ),
-				__( 'Cabintale', 'cabintale-booking-calendar' ),
-				app_url() . '/dashboard',
-			),
-			array(
-				__( 'Which widget appears on which page', 'cabintale-booking-calendar' ),
-				__( 'Here, in WordPress', 'cabintale-booking-calendar' ),
-				'',
-			),
-			array(
-				__( 'Border, and hiding the booking form', 'cabintale-booking-calendar' ),
-				__( 'Block settings on the page', 'cabintale-booking-calendar' ),
-				'',
-			),
+			array( __( 'Prices, availability, blocked dates, seasonal pricing', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places' ),
+			array( __( 'Calendar sync with Airbnb, Booking.com and other platforms (iCal)', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places' ),
+			array( __( 'Services and time slots', 'cabintale-booking-calendar' ), __( 'Cabintale → Services', 'cabintale-booking-calendar' ), app_url() . '/services' ),
+			array( __( 'Widget language and look', 'cabintale-booking-calendar' ), __( 'Cabintale → Places', 'cabintale-booking-calendar' ), app_url() . '/places' ),
+			array( __( 'Bookings as they come in', 'cabintale-booking-calendar' ), __( 'Cabintale → Dashboard', 'cabintale-booking-calendar' ), app_url() . '/dashboard' ),
+			array( __( 'Which widget appears on which page', 'cabintale-booking-calendar' ), __( 'Here, in WordPress', 'cabintale-booking-calendar' ), '' ),
+			array( __( 'Border, and hiding the booking form', 'cabintale-booking-calendar' ), __( 'Block settings on the page', 'cabintale-booking-calendar' ), '' ),
 		);
 
 		echo '<h2>' . esc_html__( 'Where to change what', 'cabintale-booking-calendar' ) . '</h2>';
-		echo '<table class="widefat striped" style="max-width:46em"><tbody>';
+		echo '<div style="overflow-x:auto"><table class="widefat striped" style="max-width:46em"><tbody>';
 
 		foreach ( $rows as $row ) {
 			echo '<tr><td>' . esc_html( $row[0] ) . '</td><td>';
 
 			if ( '' !== $row[2] ) {
 				printf(
-					'<a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+					'<span class="dashicons dashicons-external" aria-hidden="true" style="font-size:16px;width:16px;height:16px;vertical-align:text-bottom"></span> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
 					esc_url( $row[2] ),
 					esc_html( $row[1] )
 				);
@@ -213,7 +222,7 @@ class Settings {
 			echo '</td></tr>';
 		}
 
-		echo '</tbody></table>';
+		echo '</tbody></table></div>';
 	}
 
 	/**
@@ -261,12 +270,12 @@ class Settings {
 						<td>
 							<?php $kind = (string) get_option( self::OPTION_KIND, Renderer::KIND_PLACE ); ?>
 							<select id="cabintale_default_widget_kind" name="<?php echo esc_attr( self::OPTION_KIND ); ?>">
-								<option value="place" <?php selected( $kind, 'place' ); ?>><?php echo esc_html__( 'Place — availability calendar', 'cabintale-booking-calendar' ); ?></option>
+								<option value="place" <?php selected( $kind, 'place' ); ?>><?php echo esc_html__( 'Property — availability calendar', 'cabintale-booking-calendar' ); ?></option>
 								<option value="service" <?php selected( $kind, 'service' ); ?>><?php echo esc_html__( 'Service — time slots', 'cabintale-booking-calendar' ); ?></option>
 								<option value="checkout" <?php selected( $kind, 'checkout' ); ?>><?php echo esc_html__( 'Product — checkout button', 'cabintale-booking-calendar' ); ?></option>
 							</select>
 							<p class="description">
-								<?php echo esc_html__( 'Must match the widget the ID belongs to, otherwise the widget will not load. Connecting your account removes this guesswork.', 'cabintale-booking-calendar' ); ?>
+								<?php echo esc_html__( 'Must match the widget the ID belongs to, or the widget will not load. Connecting your account removes this guesswork.', 'cabintale-booking-calendar' ); ?>
 							</p>
 						</td>
 					</tr>
@@ -282,90 +291,181 @@ class Settings {
 			<table class="widefat striped" style="max-width:46em">
 				<tbody>
 					<tr><td><code>token</code></td><td><?php echo esc_html__( 'A specific widget ID. Defaults to the one above.', 'cabintale-booking-calendar' ); ?></td></tr>
-					<tr><td><code>type</code></td><td><?php echo esc_html__( 'place, service or checkout. Must match the widget.', 'cabintale-booking-calendar' ); ?></td></tr>
+					<tr><td><code>type</code></td><td><?php echo esc_html__( 'property, service or checkout. Must match the widget.', 'cabintale-booking-calendar' ); ?></td></tr>
 					<tr><td><code>border</code></td><td><?php echo esc_html__( '1 or 0.', 'cabintale-booking-calendar' ); ?></td></tr>
-					<tr><td><code>availability_only</code></td><td><?php echo esc_html__( '1 or 0. Places only — shows the calendar without the booking form.', 'cabintale-booking-calendar' ); ?></td></tr>
+					<tr><td><code>availability_only</code></td><td><?php echo esc_html__( '1 or 0. Properties only — shows the calendar without the booking form.', 'cabintale-booking-calendar' ); ?></td></tr>
 				</tbody>
 			</table>
 
-			<p><code>[cabintale_widget type="place" border="0" availability_only="1"]</code></p>
+			<p><code>[cabintale_widget type="property" border="0" availability_only="1"]</code></p>
 		</details>
 		<?php
 	}
 
 	/**
 	 * The connect / connected panel — the primary path on this screen.
+	 *
+	 * Disconnected, this is the only thing that matters, so it carries the
+	 * explanation too rather than leaving a separate "how this works" block to
+	 * compete with it. Connected, it becomes a settled one-liner: the account is
+	 * sorted, the widgets below are the interesting part.
 	 */
 	private static function render_connection(): void {
 		if ( Connect::is_connected() ) {
-			$widgets = Connect::widgets();
 			$account = Connect::account_name();
+			$widgets = Connect::widgets();
 
-			echo '<h2>' . esc_html__( 'Your Cabintale account', 'cabintale-booking-calendar' ) . '</h2>';
+			echo '<p>';
 
 			printf(
-				'<p><strong>%s</strong>%s</p>',
+				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span> <strong>%s</strong>%s ',
 				esc_html( '' !== $account ? $account : __( 'Connected', 'cabintale-booking-calendar' ) ),
 				esc_html(
 					sprintf(
 						/* translators: %d: number of widgets available on the connected account. */
-						_n( ' — %d widget available', ' — %d widgets available', count( $widgets ), 'cabintale-booking-calendar' ),
+						_n( ' — %d widget', ' — %d widgets', count( $widgets ), 'cabintale-booking-calendar' ),
 						count( $widgets )
 					)
 				)
 			);
 
-			echo '<p>';
-
-			if ( $widgets ) {
-				printf(
-					'<a href="%s" class="button button-primary">%s</a> ',
-					esc_url( self::action_url( 'create_page' ) ),
-					esc_html__( 'Create my booking page', 'cabintale-booking-calendar' )
-				);
-			}
-
 			printf(
-				'<a href="%s" class="button">%s</a>',
+				'<a href="%1$s" class="button" data-cabintale-busy="%2$s">%3$s</a>',
 				esc_url( self::action_url( 'disconnect' ) ),
+				esc_attr__( 'Disconnecting…', 'cabintale-booking-calendar' ),
 				esc_html__( 'Disconnect', 'cabintale-booking-calendar' )
 			);
 
 			echo '</p>';
 
-			if ( $widgets ) {
-				echo '<table class="widefat striped" style="max-width:46em"><thead><tr>';
-				echo '<th>' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
-				echo '<th>' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
-				echo '</tr></thead><tbody>';
+			return;
+		}
 
-				foreach ( $widgets as $widget ) {
-					$label = trim( ( $widget['group'] ? $widget['group'] . ' — ' : '' ) . $widget['name'] );
+		?>
+		<div class="card" style="max-width:46em">
+			<h2 class="title" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+				<span class="dashicons dashicons-calendar-alt" aria-hidden="true"></span>
+				<?php echo esc_html__( 'Connect your Cabintale account', 'cabintale-booking-calendar' ); ?>
+			</h2>
 
-					printf(
-						'<tr><td>%s</td><td>%s</td></tr>',
-						esc_html( '' !== $label ? $label : __( 'Untitled widget', 'cabintale-booking-calendar' ) ),
-						esc_html( self::kind_label( $widget['kind'] ) )
-					);
-				}
+			<p>
+				<?php echo esc_html__( 'Your properties, prices, availability and calendar sync live in Cabintale. This plugin puts them on your WordPress pages — change a price there and your pages show it straight away, with nothing to re-publish here.', 'cabintale-booking-calendar' ); ?>
+			</p>
 
-				echo '</tbody></table>';
-			}
+			<p>
+				<?php
+				printf(
+					'<a href="%1$s" class="button button-primary" data-cabintale-busy="%2$s">%3$s</a>',
+					esc_url( self::action_url( 'connect' ) ),
+					esc_attr__( 'Opening Cabintale…', 'cabintale-booking-calendar' ),
+					esc_html__( 'Connect to Cabintale', 'cabintale-booking-calendar' )
+				);
+				?>
+				<span class="spinner" style="float:none;margin:0 0 0 6px;vertical-align:middle"></span>
+			</p>
+
+			<p class="description">
+				<?php echo esc_html__( 'No account yet? You can create one for free in the next step.', 'cabintale-booking-calendar' ); ?>
+			</p>
+
+			<p class="description">
+				<?php echo esc_html__( 'Cabintale will ask you to approve the connection. It can only read the names of your properties and widgets — never your bookings, guests or payments.', 'cabintale-booking-calendar' ); ?>
+			</p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * The widgets on the connected account, each previewable on demand.
+	 */
+	private static function render_widgets(): void {
+		$widgets = Connect::widgets();
+
+		echo '<div class="card" style="max-width:46em">';
+		echo '<h2 class="title">' . esc_html__( 'Your widgets', 'cabintale-booking-calendar' ) . '</h2>';
+
+		if ( ! $widgets ) {
+			echo '<p>' . esc_html__( 'No widgets yet. Create one in Cabintale, then come back here to add it to a page.', 'cabintale-booking-calendar' ) . '</p>';
+			printf(
+				'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></p>',
+				esc_url( app_url() . '/places' ),
+				esc_html__( 'Open Cabintale', 'cabintale-booking-calendar' )
+			);
+			echo '</div>';
 
 			return;
 		}
 
-		echo '<h2>' . esc_html__( 'Connect your Cabintale account', 'cabintale-booking-calendar' ) . '</h2>';
-
-		echo '<p>' . esc_html__( 'Connecting lets you pick your widgets by name when adding them to a page. If you do not have an account yet, you can create one for free during the next step — it takes a couple of minutes and sets up your first availability calendar.', 'cabintale-booking-calendar' ) . '</p>';
-
 		printf(
-			'<p><a href="%s" class="button button-primary">%s</a></p>',
-			esc_url( self::action_url( 'connect' ) ),
-			esc_html__( 'Connect to Cabintale', 'cabintale-booking-calendar' )
+			'<p><a href="%1$s" class="button button-primary" data-cabintale-busy="%2$s">%3$s</a></p>',
+			esc_url( self::action_url( 'create_page' ) ),
+			esc_attr__( 'Creating the page…', 'cabintale-booking-calendar' ),
+			esc_html__( 'Create booking page', 'cabintale-booking-calendar' )
 		);
 
-		echo '<p class="description">' . esc_html__( 'You will be asked to approve the connection in Cabintale. It can only read the names of your places and widgets — never your bookings, guests or payments.', 'cabintale-booking-calendar' ) . '</p>';
+		echo '<div style="overflow-x:auto">';
+		echo '<table class="widefat striped"><thead><tr>';
+		echo '<th>' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th>' . esc_html__( 'Shows', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th>' . esc_html__( 'Preview', 'cabintale-booking-calendar' ) . '</th>';
+		echo '</tr></thead><tbody>';
+
+		$index = 0;
+
+		foreach ( $widgets as $widget ) {
+			$index++;
+			$panel_id = 'cabintale-preview-' . $index;
+			$label    = trim( ( $widget['group'] ? $widget['group'] . ' — ' : '' ) . $widget['name'] );
+
+			if ( '' === $label ) {
+				$label = __( 'Untitled widget', 'cabintale-booking-calendar' );
+			}
+
+			echo '<tr>';
+			printf( '<td>%s</td>', esc_html( $label ) );
+			printf( '<td>%s</td>', esc_html( self::kind_label( $widget['kind'] ) ) );
+
+			printf(
+				'<td><button type="button" class="button button-small" aria-expanded="false" aria-controls="%1$s" data-cabintale-preview="%2$s"><span class="dashicons dashicons-visibility" aria-hidden="true" style="vertical-align:text-bottom"></span> %3$s</button></td>',
+				esc_attr( $panel_id ),
+				/* translators: %s: widget name. */
+				esc_attr( sprintf( __( 'Loading preview of %s', 'cabintale-booking-calendar' ), $label ) ),
+				esc_html__( 'Preview', 'cabintale-booking-calendar' )
+			);
+
+			echo '</tr>';
+
+			// The preview panel is a sibling row so it can span the table, and it
+			// carries no src until opened — see assets/js/settings.js for why the
+			// first request is deliberately user-initiated.
+			printf(
+				'<tr id="%1$s" hidden><td colspan="3">%2$s<iframe data-src="%3$s" title="%4$s" style="width:100%%;max-width:460px;height:%5$dpx;border:1px solid #dcdcde;background:#fff" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
+				esc_attr( $panel_id ),
+				'<p data-cabintale-loading class="description">' . esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ) . '</p>',
+				esc_url( self::preview_url( $widget ) ),
+				/* translators: %s: widget name. */
+				esc_attr( sprintf( __( 'Preview of %s', 'cabintale-booking-calendar' ), $label ) ),
+				(int) self::preview_height( $widget['kind'] ),
+				esc_html__( 'This is live — visitors see the same widget on your page.', 'cabintale-booking-calendar' ),
+				esc_html__( 'Open full size', 'cabintale-booking-calendar' )
+			);
+		}
+
+		echo '</tbody></table></div></div>';
+	}
+
+	/**
+	 * @param array{kind: string, token: string} $widget Widget row.
+	 */
+	private static function preview_url( array $widget ): string {
+		$path = Renderer::KIND_SERVICE === $widget['kind'] ? '/service-widget/' : ( Renderer::KIND_CHECKOUT === $widget['kind'] ? '/checkout/' : '/widget/' );
+
+		return app_url() . $path . rawurlencode( $widget['token'] );
+	}
+
+	/** Matches the heights Cabintale's own embed code uses for each kind. */
+	private static function preview_height( string $kind ): int {
+		return Renderer::KIND_PLACE === $kind ? 450 : 550;
 	}
 
 	/**
@@ -383,13 +483,13 @@ class Settings {
 		$messages = array(
 			'connected'      => array( 'success', __( 'Connected. Your widgets are now available in the Cabintale block.', 'cabintale-booking-calendar' ) ),
 			'disconnected'   => array( 'success', __( 'Disconnected. Widgets already on your pages keep working.', 'cabintale-booking-calendar' ) ),
-			'cancelled'      => array( 'info', __( 'Connection cancelled. Nothing was changed.', 'cabintale-booking-calendar' ) ),
-			'expired'        => array( 'warning', __( 'That connection attempt timed out. Please start again.', 'cabintale-booking-calendar' ) ),
-			'state_mismatch' => array( 'error', __( 'The response did not match the request that started it, so it was ignored. Please start again.', 'cabintale-booking-calendar' ) ),
-			'network'        => array( 'error', __( 'Could not reach Cabintale. Check your connection and try again.', 'cabintale-booking-calendar' ) ),
-			'rejected'       => array( 'error', __( 'Cabintale did not accept the connection. Please start again.', 'cabintale-booking-calendar' ) ),
-			'no_widgets'     => array( 'warning', __( 'There are no widgets on your Cabintale account yet. Create one in Cabintale, then try again.', 'cabintale-booking-calendar' ) ),
-			'page_failed'    => array( 'error', __( 'The page could not be created. You can add the Cabintale block to a page yourself instead.', 'cabintale-booking-calendar' ) ),
+			'cancelled'      => array( 'info', __( 'Connection cancelled. Nothing changed.', 'cabintale-booking-calendar' ) ),
+			'expired'        => array( 'warning', __( 'That connection attempt timed out. Try connecting again.', 'cabintale-booking-calendar' ) ),
+			'state_mismatch' => array( 'error', __( 'That connection could not be verified. Try connecting again.', 'cabintale-booking-calendar' ) ),
+			'network'        => array( 'error', __( 'Could not reach Cabintale. Check your internet connection and try again.', 'cabintale-booking-calendar' ) ),
+			'rejected'       => array( 'error', __( 'Cabintale did not accept the connection. Try connecting again.', 'cabintale-booking-calendar' ) ),
+			'no_widgets'     => array( 'warning', __( 'Connected, but there are no widgets on your Cabintale account yet. Create one in Cabintale, then refresh this page.', 'cabintale-booking-calendar' ) ),
+			'page_failed'    => array( 'error', __( 'The booking page could not be created. Add the Cabintale block to a page yourself instead.', 'cabintale-booking-calendar' ) ),
 		);
 
 		if ( ! isset( $messages[ $status ] ) ) {
@@ -415,7 +515,7 @@ class Settings {
 			return __( 'A product — checkout button', 'cabintale-booking-calendar' );
 		}
 
-		return __( 'A place — availability calendar', 'cabintale-booking-calendar' );
+		return __( 'A property — availability calendar', 'cabintale-booking-calendar' );
 	}
 
 	private static function action_url( string $action ): string {

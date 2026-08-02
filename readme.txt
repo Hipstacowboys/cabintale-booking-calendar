@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.2.0
+Stable tag: 0.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -92,7 +92,7 @@ Check that the widget ID is correct and that the widget is active in Cabintale. 
 == Shortcode attributes ==
 
 * `token` — the widget ID. Defaults to the one saved in Settings → Cabintale.
-* `type` — `place` (availability calendar), `service` (time slots) or `checkout` (product button). Default `place`.
+* `type` — `property` (availability calendar), `service` (time slots) or `checkout` (product button). Default `property`. `place` is accepted as a synonym.
 * `border` — `1` or `0`. Default `1`.
 * `availability_only` — `1` or `0`. Places only. Default `0`.
 
@@ -103,9 +103,15 @@ Example: `[cabintale_widget type="service" border="0"]`
 1. An availability calendar on a published page.
 2. The Cabintale booking widget block in the editor.
 3. Block settings: pick a widget by name.
-4. Settings → Cabintale, where the default widget is saved.
+4. Settings → Cabintale: connected account, widget list and live preview.
 
 == Changelog ==
+
+= 0.3.0 =
+* Settings screen rebuilt: it now explains what lives in Cabintale and what lives in WordPress, and only shows instructions once they can be acted on.
+* Preview any widget from the settings screen before putting it on a page.
+* Connect, Disconnect and Create booking page now show progress instead of sitting silent for a second.
+* Terminology follows the Cabintale documentation — a single cabin is a "property". The shortcode accepts `type="property"` as well as `type="place"`.
 
 = 0.2.0 =
 * Connect your Cabintale account and pick widgets by name instead of copying IDs.
