@@ -333,3 +333,18 @@
 .cbt-settings .widefat td {
 	vertical-align: middle;
 }
+
+/* ── Needs-setup badge ───────────────────────────────────────────────────── */
+
+.cbt-settings .cbt-badge {
+	display: inline-block;
+	margin-left: 6px;
+	padding: 1px 8px;
+	border-radius: 100px;
+	background: var(--marks-color-orange-100, #FFEBD2);
+	color: var(--marks-color-orange-300, #854900);
+	font-size: 13px;
+	font-weight: 600;
+	white-space: nowrap;
+	vertical-align: middle;
+}

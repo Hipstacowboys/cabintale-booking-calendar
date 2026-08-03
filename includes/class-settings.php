@@ -265,6 +265,14 @@ class Settings {
 
 		echo '</tbody></table></div>';
 
+		if ( array_filter( $widgets, fn ( $w ) => empty( $w['ready'] ) ) ) {
+			printf(
+				'<p class="description"><strong>%1$s</strong> %2$s</p>',
+				esc_html__( 'Needs setup:', 'cabintale-booking-calendar' ),
+				esc_html__( 'this widget has no availability in Cabintale yet, so it will show an empty calendar. Open its settings above and add availability or time slots.', 'cabintale-booking-calendar' )
+			);
+		}
+
 		self::render_help();
 	}
 
@@ -502,9 +510,12 @@ class Settings {
 
 			echo '<tr>';
 
+			$needs_setup = empty( $widget['ready'] );
+
 			printf(
-				'<td><span class="cbt-widget-name">%s</span><span class="cbt-widget-parent">%s</span></td>',
+				'<td><span class="cbt-widget-name">%1$s</span>%2$s<span class="cbt-widget-parent">%3$s</span></td>',
 				esc_html( $name ),
+				$needs_setup ? ' <span class="cbt-badge">' . esc_html__( 'Needs setup', 'cabintale-booking-calendar' ) . '</span>' : '',
 				esc_html( $show_parent ? $parent . ' · ' . self::kind_label( $widget['kind'] ) : self::kind_label( $widget['kind'] ) )
 			);
 
@@ -559,6 +570,14 @@ class Settings {
 		}
 
 		echo '</tbody></table></div>';
+
+		if ( array_filter( $widgets, fn ( $w ) => empty( $w['ready'] ) ) ) {
+			printf(
+				'<p class="description"><strong>%1$s</strong> %2$s</p>',
+				esc_html__( 'Needs setup:', 'cabintale-booking-calendar' ),
+				esc_html__( 'this widget has no availability in Cabintale yet, so it will show an empty calendar. Open its settings above and add availability or time slots.', 'cabintale-booking-calendar' )
+			);
+		}
 
 		// Demoted from the primary action it used to be. It creates a plain page
 		// on the theme's default template, which is the wrong starting point for

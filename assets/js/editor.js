@@ -33,6 +33,31 @@
 	}
 
 	/**
+	 * Why a widget will render an empty calendar. Cabintale answers this rather
+	 * than the plugin guessing from the public availability endpoint, because
+	 * "nothing free" and "nothing configured" look identical from here — and
+	 * telling a fully-booked owner their setup is broken is worse than saying
+	 * nothing.
+	 */
+	function notReadyMessage( widget ) {
+		if ( ! widget || widget.ready ) {
+			return '';
+		}
+
+		if ( 'no_slots' === widget.reason ) {
+			return __(
+				'This service has no time slots in Cabintale yet, so the picker will be empty. Add slots in Cabintale, then this widget starts working — nothing to change here.',
+				'cabintale-booking-calendar'
+			);
+		}
+
+		return __(
+			'This property has no availability in Cabintale yet, so the calendar will show no bookable dates. Set availability and prices in Cabintale, then this widget starts working — nothing to change here.',
+			'cabintale-booking-calendar'
+		);
+	}
+
+	/**
 	 * "Srub Losiny — Úvod (Place)", degrading sensibly when a name or group is
 	 * missing so the dropdown never shows a bare dash.
 	 */
@@ -44,7 +69,9 @@
 			base = widget.token.slice( 0, 8 ) + '…';
 		}
 
-		return base + ' (' + kindLabel( widget.kind ) + ')';
+		var label = base + ' (' + kindLabel( widget.kind ) + ')';
+
+		return widget.ready ? label : label + ' — ' + __( 'needs setup', 'cabintale-booking-calendar' );
 	}
 
 	/**
@@ -99,6 +126,14 @@
 			setAttributes( { token: token } );
 		}
 
+		var chosen = null;
+		for ( var c = 0; c < connection.widgets.length; c++ ) {
+			if ( connection.widgets[ c ].token === atts.token ) {
+				chosen = connection.widgets[ c ];
+				break;
+			}
+		}
+
 		var picker;
 
 		if ( connection.loading ) {
@@ -127,6 +162,8 @@
 			);
 		}
 
+		var warning = notReadyMessage( chosen );
+
 		var inspector = el(
 			blockEditor.InspectorControls,
 			null,
@@ -134,6 +171,9 @@
 				components.PanelBody,
 				{ title: __( 'Widget', 'cabintale-booking-calendar' ), initialOpen: true },
 				picker,
+				warning
+					? el( components.Notice, { status: 'warning', isDismissible: false }, warning )
+					: null,
 				el( components.ToggleControl, {
 					label: __( 'Show border', 'cabintale-booking-calendar' ),
 					checked: atts.border,
@@ -157,14 +197,6 @@
 
 		// Both states use core's Placeholder so the block inherits WordPress admin
 		// typography and spacing instead of carrying styles of its own.
-		var chosen = null;
-		for ( var c = 0; c < connection.widgets.length; c++ ) {
-			if ( connection.widgets[ c ].token === atts.token ) {
-				chosen = connection.widgets[ c ];
-				break;
-			}
-		}
-
 		var body = atts.token
 			? el( components.Placeholder, {
 					icon: 'calendar-alt',
