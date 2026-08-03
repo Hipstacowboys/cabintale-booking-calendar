@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Cabintale Booking Calendar 0.7.0\n"
+"Project-Id-Version: Cabintale Booking Calendar 0.7.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cabintale-booking-calendar\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-03T09:23:15+00:00\n"
+"POT-Creation-Date: 2026-08-03T11:59:37+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: cabintale-booking-calendar\n"
@@ -54,407 +54,407 @@ msgstr ""
 msgid "Booking calendar and availability for your pages"
 msgstr ""
 
-#: includes/class-settings.php:179
+#: includes/class-settings.php:187
 msgid "Put a widget on a page"
 msgstr ""
 
-#: includes/class-settings.php:182
+#: includes/class-settings.php:190
 msgid "Any editor — Elementor, Bricks, Divi, classic, templates"
 msgstr ""
 
-#: includes/class-settings.php:184
+#: includes/class-settings.php:192
 msgid "Copy the shortcode next to your widget above."
 msgstr ""
 
-#: includes/class-settings.php:185
+#: includes/class-settings.php:193
 msgid "Edit the page you already have, where you want the calendar to appear."
 msgstr ""
 
-#: includes/class-settings.php:186
+#: includes/class-settings.php:194
 msgid "Add a shortcode or text element, paste it in, and save."
 msgstr ""
 
-#: includes/class-settings.php:189
+#: includes/class-settings.php:197
 msgid "This keeps your own page design. The widget sits inside it like any other element."
 msgstr ""
 
-#: includes/class-settings.php:194
+#: includes/class-settings.php:202
 msgid "Block editor"
 msgstr ""
 
-#: includes/class-settings.php:196
+#: includes/class-settings.php:204
 msgid "Edit the page where you want bookings."
 msgstr ""
 
-#: includes/class-settings.php:197
+#: includes/class-settings.php:205
 msgid "Add the “Cabintale booking widget” block — type /cabintale to find it quickly."
 msgstr ""
 
-#: includes/class-settings.php:198
+#: includes/class-settings.php:206
 msgid "Pick your widget from the dropdown in the block settings, then update the page."
 msgstr ""
 
-#: includes/class-settings.php:201
+#: includes/class-settings.php:209
 msgid "While editing you will see a grey card instead of the calendar. That is normal — the widget loads on the published page."
 msgstr ""
 
-#: includes/class-settings.php:221
+#: includes/class-settings.php:229
 msgid "Prices, availability, blocked dates, seasonal pricing"
 msgstr ""
 
-#: includes/class-settings.php:221
-#: includes/class-settings.php:222
-#: includes/class-settings.php:225
+#: includes/class-settings.php:229
+#: includes/class-settings.php:230
+#: includes/class-settings.php:233
 msgid "Cabintale → Places"
 msgstr ""
 
-#: includes/class-settings.php:222
+#: includes/class-settings.php:230
 msgid "Calendar sync with Airbnb, Booking.com and other platforms (iCal)"
 msgstr ""
 
-#: includes/class-settings.php:223
+#: includes/class-settings.php:231
 msgid "Services and time slots"
 msgstr ""
 
-#: includes/class-settings.php:223
+#: includes/class-settings.php:231
 msgid "Cabintale → Services"
 msgstr ""
 
-#: includes/class-settings.php:224
+#: includes/class-settings.php:232
 msgid "Widget language, look and booking form"
 msgstr ""
 
-#: includes/class-settings.php:224
+#: includes/class-settings.php:232
 msgid "Cabintale → the widget"
 msgstr ""
 
-#: includes/class-settings.php:225
+#: includes/class-settings.php:233
 msgid "Property name, timezone and currency"
 msgstr ""
 
-#: includes/class-settings.php:226
+#: includes/class-settings.php:234
 msgid "Bookings as they come in"
 msgstr ""
 
-#: includes/class-settings.php:226
+#: includes/class-settings.php:234
 msgid "Cabintale → Dashboard"
 msgstr ""
 
-#: includes/class-settings.php:227
+#: includes/class-settings.php:235
 msgid "Which widget appears on which page"
 msgstr ""
 
-#: includes/class-settings.php:227
+#: includes/class-settings.php:235
 msgid "Here, in WordPress"
 msgstr ""
 
-#: includes/class-settings.php:228
+#: includes/class-settings.php:236
 msgid "Border, and hiding the booking form"
 msgstr ""
 
-#: includes/class-settings.php:228
+#: includes/class-settings.php:236
 msgid "Block settings on the page"
 msgstr ""
 
-#: includes/class-settings.php:231
+#: includes/class-settings.php:239
 msgid "Where to change what"
 msgstr ""
 
-#: includes/class-settings.php:233
+#: includes/class-settings.php:241
 msgid "What"
 msgstr ""
 
-#: includes/class-settings.php:234
+#: includes/class-settings.php:242
 msgid "Where"
 msgstr ""
 
-#: includes/class-settings.php:235
+#: includes/class-settings.php:243
 msgid "Guide"
 msgstr ""
 
-#: includes/class-settings.php:257
+#: includes/class-settings.php:265
 msgid "Read"
 msgstr ""
 
-#: includes/class-settings.php:277
+#: includes/class-settings.php:285
 msgid "Getting started in 30 minutes"
 msgstr ""
 
-#: includes/class-settings.php:278
+#: includes/class-settings.php:286
 msgid "The booking widget explained"
 msgstr ""
 
-#: includes/class-settings.php:279
+#: includes/class-settings.php:287
 msgid "All Cabintale documentation"
 msgstr ""
 
-#: includes/class-settings.php:282
+#: includes/class-settings.php:290
 msgid "Help"
 msgstr ""
 
-#: includes/class-settings.php:302
+#: includes/class-settings.php:310
 msgid "Advanced"
 msgstr ""
 
-#: includes/class-settings.php:305
+#: includes/class-settings.php:313
 msgid "Use a widget ID instead of connecting"
 msgstr ""
 
-#: includes/class-settings.php:308
+#: includes/class-settings.php:316
 msgid "If you would rather not connect your account, paste a widget ID here. It becomes the widget used by the shortcode and by blocks where nothing is chosen. In Cabintale, open a widget and copy the ID from its embed code."
 msgstr ""
 
-#: includes/class-settings.php:318
+#: includes/class-settings.php:326
 msgid "Widget ID"
 msgstr ""
 
-#: includes/class-settings.php:335
+#: includes/class-settings.php:343
 msgid "What it is"
 msgstr ""
 
-#: includes/class-settings.php:341
+#: includes/class-settings.php:349
 msgid "Property — availability calendar"
 msgstr ""
 
-#: includes/class-settings.php:342
+#: includes/class-settings.php:350
 msgid "Service — time slots"
 msgstr ""
 
-#: includes/class-settings.php:343
+#: includes/class-settings.php:351
 msgid "Product — checkout button"
 msgstr ""
 
-#: includes/class-settings.php:346
+#: includes/class-settings.php:354
 msgid "Must match the widget the ID belongs to, or the widget will not load. Connecting your account removes this guesswork."
 msgstr ""
 
-#: includes/class-settings.php:357
+#: includes/class-settings.php:365
 msgid "Shortcode options"
 msgstr ""
 
-#: includes/class-settings.php:361
+#: includes/class-settings.php:369
 msgid "A specific widget ID. Defaults to the one above."
 msgstr ""
 
-#: includes/class-settings.php:362
+#: includes/class-settings.php:370
 msgid "property, service or checkout. Must match the widget."
 msgstr ""
 
-#: includes/class-settings.php:363
+#: includes/class-settings.php:371
 msgid "1 or 0."
 msgstr ""
 
-#: includes/class-settings.php:364
+#: includes/class-settings.php:372
 msgid "1 or 0. Properties only — shows the calendar without the booking form."
 msgstr ""
 
-#: includes/class-settings.php:390
+#: includes/class-settings.php:398
 msgid "Connected"
 msgstr ""
 
 #. translators: %d: number of widgets available on the connected account.
-#: includes/class-settings.php:394
+#: includes/class-settings.php:402
 #, php-format
 msgid "%d widget"
 msgid_plural "%d widgets"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-settings.php:405
+#: includes/class-settings.php:413
 msgid "Go to my Cabintale account"
 msgstr ""
 
-#: includes/class-settings.php:411
+#: includes/class-settings.php:419
 msgid "Disconnecting…"
 msgstr ""
 
-#: includes/class-settings.php:412
+#: includes/class-settings.php:420
 msgid "Disconnect"
 msgstr ""
 
-#: includes/class-settings.php:424
+#: includes/class-settings.php:432
 msgid "Connect your Cabintale account"
 msgstr ""
 
-#: includes/class-settings.php:428
+#: includes/class-settings.php:436
 msgid "Your properties, prices, availability and calendar sync live in Cabintale. This plugin puts them on your WordPress pages — change a price there and your pages show it straight away, with nothing to re-publish here."
 msgstr ""
 
-#: includes/class-settings.php:436
+#: includes/class-settings.php:444
 msgid "Opening Cabintale…"
 msgstr ""
 
-#: includes/class-settings.php:437
+#: includes/class-settings.php:445
 msgid "Connect to Cabintale"
 msgstr ""
 
-#: includes/class-settings.php:444
+#: includes/class-settings.php:452
 msgid "No account yet? You can create one for free in the next step."
 msgstr ""
 
-#: includes/class-settings.php:448
+#: includes/class-settings.php:456
 msgid "Cabintale will ask you to approve the connection. It can only read the names of your properties and widgets — never your bookings, guests or payments."
 msgstr ""
 
-#: includes/class-settings.php:461
+#: includes/class-settings.php:469
 msgid "Your widgets"
 msgstr ""
 
-#: includes/class-settings.php:464
+#: includes/class-settings.php:472
 msgid "No widgets yet. Create one in Cabintale, then come back here to add it to a page."
 msgstr ""
 
-#: includes/class-settings.php:468
+#: includes/class-settings.php:476
 msgid "Open Cabintale"
 msgstr ""
 
-#: includes/class-settings.php:475
+#: includes/class-settings.php:483
 msgid "How a widget looks, what language it speaks and which fields it asks for are set in Cabintale, per widget."
 msgstr ""
 
-#: includes/class-settings.php:479
+#: includes/class-settings.php:487
 #: assets/js/editor.js:149
 #: assets/js/editor.js:172
 msgid "Widget"
 msgstr ""
 
-#: includes/class-settings.php:480
+#: includes/class-settings.php:488
 msgid "Shortcode"
 msgstr ""
 
-#: includes/class-settings.php:481
+#: includes/class-settings.php:489
 msgid "Actions"
 msgstr ""
 
-#: includes/class-settings.php:493
+#: includes/class-settings.php:501
 msgid "Untitled widget"
 msgstr ""
 
-#: includes/class-settings.php:510
+#: includes/class-settings.php:522
 msgid "Needs setup"
 msgstr ""
 
-#: includes/class-settings.php:523
+#: includes/class-settings.php:534
 msgid "Copied"
 msgstr ""
 
-#: includes/class-settings.php:524
+#: includes/class-settings.php:535
 msgid "Copy"
 msgstr ""
 
 #. translators: %s: widget name.
-#: includes/class-settings.php:539
+#: includes/class-settings.php:550
 #, php-format
 msgid "Loading preview of %s"
 msgstr ""
 
-#: includes/class-settings.php:540
+#: includes/class-settings.php:551
 msgid "Preview"
 msgstr ""
 
-#: includes/class-settings.php:542
+#: includes/class-settings.php:553
 msgid "Style & language"
 msgstr ""
 
 #. translators: %s: widget name.
-#: includes/class-settings.php:569
+#: includes/class-settings.php:579
 #, php-format
 msgid "Preview of %s"
 msgstr ""
 
-#: includes/class-settings.php:571
+#: includes/class-settings.php:581
 msgid "This is live — visitors see the same widget on your page."
 msgstr ""
 
-#: includes/class-settings.php:572
+#: includes/class-settings.php:582
 msgid "Loading preview…"
 msgstr ""
 
-#: includes/class-settings.php:573
+#: includes/class-settings.php:583
 msgid "The preview did not load. A browser extension, a security plugin or a content security policy may be blocking admin.cabintale.com. The widget can still be fine on your published page — open it full size below to check."
 msgstr ""
 
-#: includes/class-settings.php:574
+#: includes/class-settings.php:584
 msgid "Open full size"
 msgstr ""
 
-#: includes/class-settings.php:583
+#: includes/class-settings.php:593
 msgid "Needs setup:"
 msgstr ""
 
-#: includes/class-settings.php:584
+#: includes/class-settings.php:594
 msgid "this widget has no availability in Cabintale yet, so it will show an empty calendar. Open its settings above and add availability or time slots."
 msgstr ""
 
-#: includes/class-settings.php:595
+#: includes/class-settings.php:605
 msgid "Creating the page…"
 msgstr ""
 
-#: includes/class-settings.php:596
+#: includes/class-settings.php:606
 msgid "Create a starter page"
 msgstr ""
 
-#: includes/class-settings.php:599
+#: includes/class-settings.php:609
 msgid "Makes a new page called “Book now” with your first widget on it, using your theme’s default layout. If you already have a page designed, paste the shortcode into it instead."
 msgstr ""
 
-#: includes/class-settings.php:647
+#: includes/class-settings.php:657
 msgid "Connected. Your widgets are now available in the Cabintale block."
 msgstr ""
 
-#: includes/class-settings.php:648
+#: includes/class-settings.php:658
 msgid "Disconnected. Widgets already on your pages keep working."
 msgstr ""
 
-#: includes/class-settings.php:649
+#: includes/class-settings.php:659
 msgid "Connection cancelled. Nothing changed."
 msgstr ""
 
-#: includes/class-settings.php:650
+#: includes/class-settings.php:660
 msgid "That connection attempt timed out. Try connecting again."
 msgstr ""
 
-#: includes/class-settings.php:651
+#: includes/class-settings.php:661
 msgid "That connection could not be verified. Try connecting again."
 msgstr ""
 
-#: includes/class-settings.php:652
+#: includes/class-settings.php:662
 msgid "Could not reach Cabintale. Check your internet connection and try again."
 msgstr ""
 
-#: includes/class-settings.php:653
+#: includes/class-settings.php:663
 msgid "Cabintale did not accept the connection. Try connecting again."
 msgstr ""
 
-#: includes/class-settings.php:654
+#: includes/class-settings.php:664
 msgid "Connected, but there are no widgets on your Cabintale account yet. Create one in Cabintale, then refresh this page."
 msgstr ""
 
-#: includes/class-settings.php:655
+#: includes/class-settings.php:665
 msgid "The booking page could not be created. Add the Cabintale block to a page yourself instead."
 msgstr ""
 
-#: includes/class-settings.php:674
+#: includes/class-settings.php:684
 msgid "A service — time slots"
 msgstr ""
 
-#: includes/class-settings.php:678
+#: includes/class-settings.php:688
 msgid "A product — checkout button"
 msgstr ""
 
-#: includes/class-settings.php:681
+#: includes/class-settings.php:691
 msgid "A property — availability calendar"
 msgstr ""
 
-#: includes/class-settings.php:719
+#: includes/class-settings.php:729
 msgid "Cabintale is active. Add your widget to finish setting it up."
 msgstr ""
 
-#: includes/class-settings.php:721
+#: includes/class-settings.php:731
 msgid "Open Cabintale settings"
 msgstr ""
 
-#: includes/class-settings.php:733
+#: includes/class-settings.php:743
 msgid "Settings"
 msgstr ""
 

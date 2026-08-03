@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.7.0
+Stable tag: 0.7.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -110,6 +110,9 @@ Example: `[cabintale_widget type="service" border="0"]`
 4. Settings → Cabintale: connected account, widget list and live preview.
 
 == Changelog ==
+
+= 0.7.1 =
+* The "Needs setup" badge now sits under the widget type instead of beside its name, and the status message after connecting no longer lands inside the Cabintale header.
 
 = 0.7.0 =
 * Czech translation, and the plugin now ships a translation template so it can be translated into any language.

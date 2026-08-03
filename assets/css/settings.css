@@ -336,9 +336,11 @@
 
 /* ── Needs-setup badge ───────────────────────────────────────────────────── */
 
+/* Sits on its own line under the kind, so it reads as the widget's state
+   rather than as part of its name. */
 .cbt-settings .cbt-badge {
 	display: inline-block;
-	margin-left: 6px;
+	margin-top: 4px;
 	padding: 1px 8px;
 	border-radius: 100px;
 	background: var(--marks-color-orange-100, #FFEBD2);

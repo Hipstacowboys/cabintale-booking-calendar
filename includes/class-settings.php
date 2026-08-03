@@ -151,6 +151,14 @@ class Settings {
 			</div>
 
 			<?php
+			// Core's common.js relocates every .notice to just after the first
+			// `.wrap h1` unless it finds this marker — and our h1 lives inside the
+			// header card, so "Connected." was being injected into the middle of
+			// it. The marker moves the insertion point below the whole card.
+			?>
+			<hr class="wp-header-end">
+
+			<?php
 			self::render_status();
 			self::render_connection();
 
@@ -504,11 +512,14 @@ class Settings {
 
 			$needs_setup = empty( $widget['ready'] );
 
+			// Badge last, under the kind line: it is a state, not part of the
+			// name, and squeezing it between the two pushed the name off its own
+			// line on narrow screens.
 			printf(
-				'<td><span class="cbt-widget-name">%1$s</span>%2$s<span class="cbt-widget-parent">%3$s</span></td>',
+				'<td><span class="cbt-widget-name">%1$s</span><span class="cbt-widget-parent">%2$s</span>%3$s</td>',
 				esc_html( $name ),
-				$needs_setup ? ' <span class="cbt-badge">' . esc_html__( 'Needs setup', 'cabintale-booking-calendar' ) . '</span>' : '',
-				esc_html( $show_parent ? $parent . ' · ' . self::kind_label( $widget['kind'] ) : self::kind_label( $widget['kind'] ) )
+				esc_html( $show_parent ? $parent . ' · ' . self::kind_label( $widget['kind'] ) : self::kind_label( $widget['kind'] ) ),
+				$needs_setup ? '<span class="cbt-badge">' . esc_html__( 'Needs setup', 'cabintale-booking-calendar' ) . '</span>' : ''
 			);
 
 			// The shortcode is the one instruction that works everywhere —
