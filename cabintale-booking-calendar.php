@@ -107,6 +107,14 @@ add_action( 'init', __NAMESPACE__ . '\register_assets' );
 /**
  * Load translations. Kept on init (not plugins_loaded) to match how WordPress
  * loads block and shortcode strings.
+ *
+ * Plugin Check flags load_plugin_textdomain() as unnecessary since WordPress
+ * 4.6, and for translations delivered from translate.wordpress.org it is. The
+ * Czech translation in languages/ ships with the plugin instead, and
+ * just-in-time loading only learned to find a bundled translation through the
+ * Domain Path header in WordPress 6.7 — this plugin supports 6.3. Verified on
+ * 7.0.2 that the call is redundant there; it is kept for the four releases
+ * where it is not.
  */
 function load_textdomain(): void {
 	load_plugin_textdomain( TEXT_DOM, false, dirname( plugin_basename( PLUGIN_FILE ) ) . '/languages' );
