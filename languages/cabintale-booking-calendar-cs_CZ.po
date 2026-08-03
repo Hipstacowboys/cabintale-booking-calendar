@@ -38,7 +38,7 @@ msgstr "Zobrazte živou dostupnost a přijímejte rezervace pro svou chatu, chal
 msgid "Cabintale"
 msgstr ""
 
-#: includes/class-connect.php:350
+#: includes/class-connect.php:357
 msgid "Book now"
 msgstr "Rezervovat"
 
@@ -176,11 +176,11 @@ msgstr "Návod"
 msgid "Read"
 msgstr "Číst"
 
-#: includes/class-settings.php:593
+#: includes/class-settings.php:601
 msgid "Needs setup:"
 msgstr "Vyžaduje nastavení:"
 
-#: includes/class-settings.php:594
+#: includes/class-settings.php:602
 msgid "this widget has no availability in Cabintale yet, so it will show an empty calendar. Open its settings above and add availability or time slots."
 msgstr "tento widget ještě nemá v Cabintale žádnou dostupnost, takže zobrazí prázdný kalendář. Otevřete jeho nastavení výše a doplňte dostupnost nebo časové sloty."
 
@@ -352,97 +352,93 @@ msgstr "Načítá se náhled %s"
 msgid "Preview"
 msgstr "Náhled"
 
-#: includes/class-settings.php:582
+#: includes/class-settings.php:590
 msgid "Loading preview…"
 msgstr "Načítá se náhled…"
 
-#: includes/class-settings.php:583
-msgid "The preview did not load. A browser extension, a security plugin or a content security policy may be blocking admin.cabintale.com. The widget can still be fine on your published page — open it full size below to check."
-msgstr "Náhled se nenačetl. Může ho blokovat rozšíření prohlížeče, bezpečnostní plugin nebo content security policy pro admin.cabintale.com. Na publikované stránce může widget přesto fungovat v pořádku — ověřte to otevřením v plné velikosti níže."
-
 #. translators: %s: widget name.
-#: includes/class-settings.php:579
+#: includes/class-settings.php:587
 #, php-format
 msgid "Preview of %s"
 msgstr "Náhled %s"
 
-#: includes/class-settings.php:581
+#: includes/class-settings.php:589
 msgid "This is live — visitors see the same widget on your page."
 msgstr "Toto je živé — návštěvníci vidí na vaší stránce stejný widget."
 
-#: includes/class-settings.php:584
+#: includes/class-settings.php:592
 msgid "Open full size"
 msgstr "Otevřít v plné velikosti"
 
-#: includes/class-settings.php:605
+#: includes/class-settings.php:613
 msgid "Creating the page…"
 msgstr "Vytváří se stránka…"
 
-#: includes/class-settings.php:606
+#: includes/class-settings.php:614
 msgid "Create a starter page"
 msgstr "Vytvořit úvodní stránku"
 
-#: includes/class-settings.php:609
+#: includes/class-settings.php:617
 msgid "Makes a new page called “Book now” with your first widget on it, using your theme’s default layout. If you already have a page designed, paste the shortcode into it instead."
 msgstr "Vytvoří novou stránku „Rezervovat“ s vaším prvním widgetem, podle výchozího vzhledu vaší šablony. Pokud už máte stránku navrženou, vložte shortcode do ní."
 
-#: includes/class-settings.php:657
+#: includes/class-settings.php:665
 msgid "Connected. Your widgets are now available in the Cabintale block."
 msgstr "Připojeno. Vaše widgety jsou teď dostupné v bloku Cabintale."
 
-#: includes/class-settings.php:658
+#: includes/class-settings.php:666
 msgid "Disconnected. Widgets already on your pages keep working."
 msgstr "Odpojeno. Widgety, které už máte na stránkách, dál fungují."
 
-#: includes/class-settings.php:659
+#: includes/class-settings.php:667
 msgid "Connection cancelled. Nothing changed."
 msgstr "Propojení zrušeno. Nic se nezměnilo."
 
-#: includes/class-settings.php:660
+#: includes/class-settings.php:668
 msgid "That connection attempt timed out. Try connecting again."
 msgstr "Ten pokus o propojení vypršel. Zkuste se připojit znovu."
 
-#: includes/class-settings.php:661
+#: includes/class-settings.php:669
 msgid "That connection could not be verified. Try connecting again."
 msgstr "Toto propojení se nepodařilo ověřit. Zkuste se připojit znovu."
 
-#: includes/class-settings.php:662
+#: includes/class-settings.php:670
 msgid "Could not reach Cabintale. Check your internet connection and try again."
 msgstr "Nepodařilo se spojit s Cabintale. Zkontrolujte internetové připojení a zkuste to znovu."
 
-#: includes/class-settings.php:663
+#: includes/class-settings.php:671
 msgid "Cabintale did not accept the connection. Try connecting again."
 msgstr "Cabintale propojení nepřijalo. Zkuste se připojit znovu."
 
-#: includes/class-settings.php:664
+#: includes/class-settings.php:672
 msgid "Connected, but there are no widgets on your Cabintale account yet. Create one in Cabintale, then refresh this page."
 msgstr "Připojeno, ale na vašem účtu Cabintale ještě nejsou žádné widgety. Vytvořte jeden v Cabintale a pak obnovte tuto stránku."
 
-#: includes/class-settings.php:665
+#: includes/class-settings.php:673
 msgid "The booking page could not be created. Add the Cabintale block to a page yourself instead."
 msgstr "Rezervační stránku se nepodařilo vytvořit. Vložte blok Cabintale na stránku sami."
 
-#: includes/class-settings.php:684
+#: includes/class-settings.php:692
 msgid "A service — time slots"
 msgstr "Služba — časové sloty"
 
-#: includes/class-settings.php:688
+#: includes/class-settings.php:696
 msgid "A product — checkout button"
 msgstr "Produkt — tlačítko pokladny"
 
-#: includes/class-settings.php:691
+#: includes/class-settings.php:699
 msgid "A property — availability calendar"
 msgstr "Ubytování — kalendář dostupnosti"
 
-#: includes/class-settings.php:729
+#: includes/class-settings.php:737
 msgid "Cabintale is active. Add your widget to finish setting it up."
 msgstr "Cabintale je aktivní. Doplňte widget a dokončete nastavení."
 
-#: includes/class-settings.php:731
+#: includes/class-settings.php:739
 msgid "Open Cabintale settings"
 msgstr "Otevřít nastavení Cabintale"
 
-#: includes/class-settings.php:743
+#: includes/class-settings.php:751
 msgid "Settings"
 msgstr "Nastavení"
 
@@ -577,3 +573,7 @@ msgstr[2] "%d widgetů"
 #: includes/class-settings.php:553
 msgid "Style & language"
 msgstr "Vzhled a jazyk"
+
+#: includes/class-settings.php:591
+msgid "Nothing arrived after ten seconds. The request may just be slow, or something on this site or in your browser may be blocking admin.cabintale.com. Open the preview full size below to see whether the widget itself is fine."
+msgstr "Za deset sekund nic nepřišlo. Požadavek může být jen pomalý, nebo něco na tomto webu či ve vašem prohlížeči blokuje admin.cabintale.com. Otevřete náhled níže v plné velikosti a zjistíte, jestli je samotný widget v pořádku."

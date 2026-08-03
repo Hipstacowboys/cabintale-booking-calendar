@@ -23,7 +23,14 @@ class Connect {
 	const OPTION_TOKEN   = 'cabintale_api_token';
 	const OPTION_ACCOUNT = 'cabintale_account_name';
 	const TRANSIENT_PKCE = 'cabintale_pkce_';
-	const TRANSIENT_LIST = 'cabintale_widgets_';
+	/**
+	 * Cached widget list. The trailing number is a schema version, not decoration:
+	 * the transient holds already-mapped rows, so adding a key to them (0.7.0
+	 * added `ready`/`reason`) leaves a stale cache whose rows lack it — which read
+	 * as "not ready" and badged every widget for the remaining ten minutes.
+	 * Bump it whenever the row shape changes.
+	 */
+	const TRANSIENT_LIST = 'cabintale_widgets2_';
 
 	/** How long a started-but-unfinished connection stays resumable. */
 	const PKCE_TTL = HOUR_IN_SECONDS;

@@ -51,7 +51,9 @@ function cabintale_bc_delete_site_data() {
  * the loop variables stay out of the global scope.
  */
 function cabintale_bc_delete_network_data() {
-	foreach ( get_sites( array( 'fields' => 'ids' ) ) as $site_id ) {
+	// number => 0 for all of them: WP_Site_Query defaults to 100, which would
+	// leave the stored API token behind on every site past the hundredth.
+	foreach ( get_sites( array( 'fields' => 'ids', 'number' => 0 ) ) as $site_id ) {
 		switch_to_blog( (int) $site_id );
 		cabintale_bc_delete_site_data();
 		restore_current_blog();

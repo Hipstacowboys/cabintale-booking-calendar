@@ -103,6 +103,11 @@
 					// Waiting is the only signal available. Ten seconds is long
 					// enough for a slow connection and short enough that nobody
 					// stares at "Loading preview…" wondering.
+					//
+					// This catches a hanging request, not a refused one: a frame
+					// stopped by X-Frame-Options, a CSP rule or an extension
+					// still fires `load` below and so cancels this timer. The
+					// message wording accounts for that.
 					var giveUp = window.setTimeout( function () {
 						if ( loading ) {
 							loading.hidden = true;
@@ -113,8 +118,14 @@
 
 							// The live region was `hidden` when the page parsed,
 							// so revealing it is not reliably announced on its
-							// own — say it out loud too.
-							speak( failed.textContent );
+							// own — say it out loud too. Only when this panel is
+							// still the open one: closing it, or opening another
+							// widget's preview, does not cancel this timer, and
+							// announcing a failure for an off-screen panel reads
+							// as a failure of whatever is on screen now.
+							if ( ! panel.hidden ) {
+								speak( failed.textContent );
+							}
 						}
 					}, 10000 );
 

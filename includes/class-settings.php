@@ -566,6 +566,14 @@ class Settings {
 			// an aria-live region rather than role="alert": an alert set on an
 			// element that was already hidden at parse time is not reliably
 			// announced when it is later revealed.
+			//
+			// The timeout only catches a request that hangs. A frame stopped by
+			// X-Frame-Options, a CSP frame-src rule or a blocking extension
+			// still fires `load`, so it clears the timer and leaves an empty
+			// box — hence the wording below, which does not claim to know why,
+			// and the full-size link, which works regardless. Detecting the
+			// blocked case properly needs a signal from the widget page itself;
+			// parked in the Cabintale repo's docs/TODOS.md.
 			printf(
 				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="3">'
 					. '<p data-cabintale-loading class="description">%6$s</p>'
@@ -580,7 +588,7 @@ class Settings {
 				(int) self::preview_height( $widget['kind'] ),
 				esc_html__( 'This is live — visitors see the same widget on your page.', 'cabintale-booking-calendar' ),
 				esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ),
-				esc_html__( 'The preview did not load. A browser extension, a security plugin or a content security policy may be blocking admin.cabintale.com. The widget can still be fine on your published page — open it full size below to check.', 'cabintale-booking-calendar' ),
+				esc_html__( 'Nothing arrived after ten seconds. The request may just be slow, or something on this site or in your browser may be blocking admin.cabintale.com. Open the preview full size below to see whether the widget itself is fine.', 'cabintale-booking-calendar' ),
 				esc_html__( 'Open full size', 'cabintale-booking-calendar' )
 			);
 		}
