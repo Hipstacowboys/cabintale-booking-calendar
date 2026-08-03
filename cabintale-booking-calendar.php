@@ -3,7 +3,7 @@
  * Plugin Name:       Cabintale Booking Calendar
  * Plugin URI:        https://cabintale.com/
  * Description:       Show live availability and take bookings for your cabin, cottage or rental with a Cabintale widget — as a block or a shortcode.
- * Version:           0.6.0
+ * Version:           0.7.0
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Cabintale
@@ -25,7 +25,7 @@ namespace Cabintale\BookingCalendar;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION  = '0.6.0';
+const VERSION  = '0.7.0';
 const SLUG     = 'cabintale-booking-calendar';
 const TEXT_DOM = 'cabintale-booking-calendar';
 
@@ -95,7 +95,7 @@ function register_assets(): void {
 		// No version query string: the file is served by Cabintale with its own
 		// cache headers, and a plugin version here would bust them on every
 		// plugin update for no reason.
-		null,
+		null, // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- deliberate, see above.
 		array(
 			'in_footer' => true,
 			'strategy'  => 'defer',

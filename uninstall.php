@@ -46,15 +46,20 @@ function cabintale_bc_delete_site_data() {
 	);
 }
 
-cabintale_bc_delete_site_data();
-
-// Multisite: options are per site, so clear each one.
-if ( is_multisite() ) {
-	$sites = get_sites( array( 'fields' => 'ids' ) );
-
-	foreach ( $sites as $site_id ) {
+/**
+ * Multisite: options are per site, so clear each one. Wrapped in a function so
+ * the loop variables stay out of the global scope.
+ */
+function cabintale_bc_delete_network_data() {
+	foreach ( get_sites( array( 'fields' => 'ids' ) ) as $site_id ) {
 		switch_to_blog( (int) $site_id );
 		cabintale_bc_delete_site_data();
 		restore_current_blog();
 	}
+}
+
+cabintale_bc_delete_site_data();
+
+if ( is_multisite() ) {
+	cabintale_bc_delete_network_data();
 }

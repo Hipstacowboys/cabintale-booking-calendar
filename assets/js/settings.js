@@ -94,11 +94,40 @@
 
 				// Load once, then keep it — reopening should not re-request.
 				if ( frame && src && ! frame.getAttribute( 'src' ) ) {
+					var loading = panel.querySelector( '[data-cabintale-loading]' );
+					var failed  = panel.querySelector( '[data-cabintale-preview-error]' );
+
+					// A cross-origin iframe reports nothing when it is blocked —
+					// no error event, no readable document — so a preview that
+					// never arrives is indistinguishable from one still loading.
+					// Waiting is the only signal available. Ten seconds is long
+					// enough for a slow connection and short enough that nobody
+					// stares at "Loading preview…" wondering.
+					var giveUp = window.setTimeout( function () {
+						if ( loading ) {
+							loading.hidden = true;
+						}
+
+						if ( failed ) {
+							failed.hidden = false;
+
+							// The live region was `hidden` when the page parsed,
+							// so revealing it is not reliably announced on its
+							// own — say it out loud too.
+							speak( failed.textContent );
+						}
+					}, 10000 );
+
 					frame.addEventListener( 'load', function () {
-						var loading = panel.querySelector( '[data-cabintale-loading]' );
+						window.clearTimeout( giveUp );
 
 						if ( loading ) {
 							loading.hidden = true;
+						}
+
+						// It arrived late, after the timeout already gave up.
+						if ( failed ) {
+							failed.hidden = true;
 						}
 					} );
 

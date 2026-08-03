@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
 // get_block_wrapper_attributes() carries the theme's alignment, spacing and
 // custom class settings, so the block honours the editor's own controls without
 // this plugin reimplementing any of them.
-echo Renderer::render( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Renderer escapes every attribute it emits and returns no user-authored HTML.
-	is_array( $attributes ) ? $attributes : array(),
-	get_block_wrapper_attributes( array( 'class' => 'cabintale-widget' ) )
-);
+$cabintale_wrapper = get_block_wrapper_attributes( array( 'class' => 'cabintale-widget' ) );
+
+// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Renderer escapes every attribute it emits and returns no user-authored HTML; the wrapper attributes come escaped from core.
+echo Renderer::render( is_array( $attributes ) ? $attributes : array(), $cabintale_wrapper );

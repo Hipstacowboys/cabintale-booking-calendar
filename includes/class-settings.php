@@ -230,9 +230,9 @@ class Settings {
 
 		echo '<h2>' . esc_html__( 'Where to change what', 'cabintale-booking-calendar' ) . '</h2>';
 		echo '<div style="overflow-x:auto"><table class="widefat striped"><thead><tr>';
-		echo '<th>' . esc_html__( 'What', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th>' . esc_html__( 'Where', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th>' . esc_html__( 'Guide', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'What', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Where', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th scope="col">' . esc_html__( 'Guide', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
 		foreach ( $rows as $row ) {
@@ -264,14 +264,6 @@ class Settings {
 		}
 
 		echo '</tbody></table></div>';
-
-		if ( array_filter( $widgets, fn ( $w ) => empty( $w['ready'] ) ) ) {
-			printf(
-				'<p class="description"><strong>%1$s</strong> %2$s</p>',
-				esc_html__( 'Needs setup:', 'cabintale-booking-calendar' ),
-				esc_html__( 'this widget has no availability in Cabintale yet, so it will show an empty calendar. Open its settings above and add availability or time slots.', 'cabintale-booking-calendar' )
-			);
-		}
 
 		self::render_help();
 	}
@@ -394,12 +386,12 @@ class Settings {
 			echo '<div class="cbt-connected">';
 
 			printf(
-				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span><strong>%s</strong><span class="cbt-connected__meta">%s</span>',
+				'<span class="dashicons dashicons-yes-alt" aria-hidden="true"></span><strong>%s</strong><span class="cbt-connected__meta"> &mdash; %s</span>',
 				esc_html( '' !== $account ? $account : __( 'Connected', 'cabintale-booking-calendar' ) ),
 				esc_html(
 					sprintf(
 						/* translators: %d: number of widgets available on the connected account. */
-						_n( ' — %d widget', ' — %d widgets', count( $widgets ), 'cabintale-booking-calendar' ),
+						_n( '%d widget', '%d widgets', count( $widgets ), 'cabintale-booking-calendar' ),
 						count( $widgets )
 					)
 				)
@@ -484,15 +476,15 @@ class Settings {
 
 		echo '<div class="cbt-widgets-table" style="overflow-x:auto">';
 		echo '<table class="widefat striped"><thead><tr>';
-		echo '<th class="cbt-col-name">' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th class="cbt-col-shortcode">' . esc_html__( 'Shortcode', 'cabintale-booking-calendar' ) . '</th>';
-		echo '<th class="cbt-actions">' . esc_html__( 'Actions', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th scope="col" class="cbt-col-name">' . esc_html__( 'Widget', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th scope="col" class="cbt-col-shortcode">' . esc_html__( 'Shortcode', 'cabintale-booking-calendar' ) . '</th>';
+		echo '<th scope="col" class="cbt-actions">' . esc_html__( 'Actions', 'cabintale-booking-calendar' ) . '</th>';
 		echo '</tr></thead><tbody>';
 
 		$index = 0;
 
 		foreach ( $widgets as $widget ) {
-			$index++;
+			++$index;
 			$panel_id = 'cabintale-preview-' . $index;
 			$name     = trim( (string) $widget['name'] );
 			$parent   = trim( (string) $widget['group'] );
@@ -547,24 +539,37 @@ class Settings {
 				esc_attr( sprintf( __( 'Loading preview of %s', 'cabintale-booking-calendar' ), $label ) ),
 				esc_html__( 'Preview', 'cabintale-booking-calendar' ),
 				esc_url( app_url() . '/connect/widget/' . rawurlencode( $widget['token'] ) . '/edit' ),
-				esc_html__( 'Style &amp; language', 'cabintale-booking-calendar' )
+				esc_html__( 'Style & language', 'cabintale-booking-calendar' )
 			);
-
 
 			echo '</tr>';
 
 			// The preview panel is a sibling row so it can span the table, and it
 			// carries no src until opened — see assets/js/settings.js for why the
 			// first request is deliberately user-initiated.
+			//
+			// An iframe fires no usable error event, so a preview that never
+			// arrives can only be caught by waiting. The failure message is
+			// rendered hidden and revealed by the timeout in settings.js, which
+			// keeps the string translatable without localising the script. It is
+			// an aria-live region rather than role="alert": an alert set on an
+			// element that was already hidden at parse time is not reliably
+			// announced when it is later revealed.
 			printf(
-				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="3">%2$s<iframe data-src="%3$s" title="%4$s" style="height:%5$dpx" scrolling="no"></iframe><p class="description">%6$s <a href="%3$s" target="_blank" rel="noopener noreferrer">%7$s</a></p></td></tr>',
+				'<tr id="%1$s" hidden class="cbt-preview"><td colspan="3">'
+					. '<p data-cabintale-loading class="description">%6$s</p>'
+					. '<p data-cabintale-preview-error class="description" aria-live="polite" hidden>%7$s</p>'
+					. '<iframe data-src="%2$s" title="%3$s" style="height:%4$dpx" scrolling="no"></iframe>'
+					. '<p class="description">%5$s <a href="%2$s" target="_blank" rel="noopener noreferrer">%8$s</a></p>'
+				. '</td></tr>',
 				esc_attr( $panel_id ),
-				'<p data-cabintale-loading class="description">' . esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ) . '</p>',
 				esc_url( self::preview_url( $widget ) ),
 				/* translators: %s: widget name. */
 				esc_attr( sprintf( __( 'Preview of %s', 'cabintale-booking-calendar' ), $label ) ),
 				(int) self::preview_height( $widget['kind'] ),
 				esc_html__( 'This is live — visitors see the same widget on your page.', 'cabintale-booking-calendar' ),
+				esc_html__( 'Loading preview…', 'cabintale-booking-calendar' ),
+				esc_html__( 'The preview did not load. A browser extension, a security plugin or a content security policy may be blocking admin.cabintale.com. The widget can still be fine on your published page — open it full size below to check.', 'cabintale-booking-calendar' ),
 				esc_html__( 'Open full size', 'cabintale-booking-calendar' )
 			);
 		}

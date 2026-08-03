@@ -132,6 +132,7 @@ class Connect {
 	}
 
 	private static function on_settings_page(): bool {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- reads which screen is being viewed, changes nothing; the actions themselves are nonce-checked in handle_actions().
 		return isset( $_GET['page'] ) && Settings::PAGE_SLUG === sanitize_key( wp_unslash( $_GET['page'] ) );
 	}
 
@@ -214,7 +215,7 @@ class Connect {
 	/**
 	 * Widgets on the connected account, newest cache first.
 	 *
-	 * @return array<int, array{kind: string, token: string, name: string, group: string}>
+	 * @return array<int, array{kind: string, token: string, name: string, group: string, ready: bool, reason: string}>
 	 */
 	public static function widgets( bool $force = false ): array {
 		$key = self::TRANSIENT_LIST . md5( self::token() );
@@ -270,10 +271,16 @@ class Connect {
 			}
 
 			$widgets[] = array(
-				'kind'  => isset( Renderer::KIND_ATTRIBUTES[ $widget['kind'] ?? '' ] ) ? (string) $widget['kind'] : Renderer::KIND_PLACE,
-				'token' => (string) $widget['token'],
-				'name'  => sanitize_text_field( (string) ( $widget['name'] ?? '' ) ),
-				'group' => sanitize_text_field( (string) ( $widget['group'] ?? '' ) ),
+				'kind'   => isset( Renderer::KIND_ATTRIBUTES[ $widget['kind'] ?? '' ] ) ? (string) $widget['kind'] : Renderer::KIND_PLACE,
+				'token'  => (string) $widget['token'],
+				'name'   => sanitize_text_field( (string) ( $widget['name'] ?? '' ) ),
+				'group'  => sanitize_text_field( (string) ( $widget['group'] ?? '' ) ),
+				// Readiness is Cabintale's call — only it can tell "never
+				// configured" from "fully booked". A response without the key
+				// is an older Cabintale, and silence there must not badge every
+				// widget as broken, so it counts as ready.
+				'ready'  => ! array_key_exists( 'ready', $widget ) || (bool) $widget['ready'],
+				'reason' => sanitize_key( (string) ( $widget['not_ready_reason'] ?? '' ) ),
 			);
 		}
 
@@ -307,11 +314,16 @@ class Connect {
 	}
 
 	public static function rest_widgets( \WP_REST_Request $request ) {
+		// Reading the list is an editor's job, but forcing a refresh bypasses the
+		// cache and makes this site call Cabintale — that stays with whoever
+		// connected the account.
+		$force = (bool) $request->get_param( 'refresh' ) && current_user_can( 'manage_options' );
+
 		return rest_ensure_response(
 			array(
 				'connected' => self::is_connected(),
 				'account'   => self::account_name(),
-				'widgets'   => self::widgets( (bool) $request->get_param( 'refresh' ) ),
+				'widgets'   => self::widgets( $force ),
 			)
 		);
 	}
@@ -363,8 +375,8 @@ class Connect {
 		wp_safe_redirect(
 			add_query_arg(
 				array(
-					'page'              => Settings::PAGE_SLUG,
-					'cabintale_status'  => $status,
+					'page'             => Settings::PAGE_SLUG,
+					'cabintale_status' => $status,
 				),
 				admin_url( 'options-general.php' )
 			)
@@ -372,6 +384,7 @@ class Connect {
 		exit;
 	}
 
+	/** base64url alphabet over random_bytes(), for the PKCE verifier and state. */
 	private static function random( int $length ): string {
 		return substr( str_replace( array( '+', '/', '=' ), '', base64_encode( random_bytes( $length ) ) ), 0, $length );
 	}

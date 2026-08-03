@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.6.0
+Stable tag: 0.7.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,17 +29,21 @@ Many themes, security plugins and page builders strip `<script>` tags out of pos
 
 = Do I need a Cabintale account? =
 
-Yes. Cabintale is a booking system for cabins, cottages and small rentals, and this plugin displays widgets from it. **Creating an account is free** — the free Starter plan covers up to 2 places and 2 services, availability calendars, seasonal pricing and two-way iCal sync with Airbnb, Booking.com and Vrbo. Taking booking requests through the widget and accepting payments are paid plans.
+Yes. Cabintale is a booking system for cabins, cottages and small rentals, and this plugin displays widgets from it. **Creating an account is free** — the free Starter plan covers up to 2 places and 2 services, availability calendars, seasonal pricing and two-way iCal sync with Airbnb, Booking.com and Vrbo. Taking booking requests through the widget and accepting payments are paid plans — both are free for everyone while Cabintale is in beta.
 
 == External services ==
 
 This plugin connects to Cabintale, the booking service that stores your places, availability and widgets. It is required for the plugin to do anything.
 
-**If you connect your account,** this site stores a read-only access token and uses it to ask Cabintale for the list of your widgets, so you can pick one by name. Those requests come from your server, not from your visitors' browsers, and no visitor data is involved. Connecting is optional.
+Every request below goes to `admin.cabintale.com`. Nothing else is contacted, and no request is made on a front-end page that has no widget on it.
 
-**What is sent, and when:** on a page where you have placed a Cabintale widget, the visitor's browser loads the widget script from `admin.cabintale.com` and displays the widget in an iframe served from the same domain. As with any embedded content, that request includes the visitor's IP address and browser user agent. If the visitor makes a booking, the details they type into the widget are submitted to Cabintale.
+**On your public pages, when a page contains a widget.** The visitor's browser loads `admin.cabintale.com/widget-embed.js` and displays the widget in an iframe from the same domain. As with any embedded content, those requests carry the visitor's IP address and browser user agent. If the visitor makes a booking, whatever they type into the widget is submitted to Cabintale.
 
-Nothing is sent to Cabintale from your WordPress admin, and the plugin makes no requests at all on pages without a widget.
+**When you click "Connect to Cabintale"** (optional — the plugin also works with a pasted widget ID). Your browser is sent to `admin.cabintale.com/connect/wordpress` with your site's URL, your site's name and the WordPress address to return to, so Cabintale can show you what it is about to grant. If you approve it, this site exchanges a one-time code at `/api/v1/connect/token`, server to server, and stores the read-only access token it gets back.
+
+**While you are connected.** Your server sends the token to `/api/v1/widgets` to fetch the names of your places, services and widgets — on the Settings → Cabintale screen and in the block editor, cached for ten minutes. Clicking Disconnect posts the token to `/api/v1/connect/revoke` so Cabintale invalidates it. No visitor data is involved in any of these.
+
+**When you open a preview in Settings → Cabintale.** That preview is the live widget in an iframe, so your own browser's IP address and user agent reach Cabintale exactly as a visitor's would. Previews load only when you click one, never on page load.
 
 Service provided by Cabintale: [cabintale.com](https://cabintale.com/) — [terms of service and privacy policy](https://cabintale.com/legal).
 
@@ -67,7 +71,7 @@ Log in to Cabintale, open the widget you want to show, and copy the ID from its 
 
 = Is it free? =
 
-The plugin is free, and Cabintale has a free Starter plan that includes the embeddable widget, availability calendar, seasonal pricing and iCal sync. Accepting booking requests and payments through the widget requires a paid Cabintale plan.
+The plugin is free, and Cabintale has a free Starter plan that includes the embeddable widget, availability calendar, seasonal pricing and iCal sync. Accepting booking requests and payments through the widget belongs to a paid Cabintale plan, but is free for everyone while Cabintale is in beta.
 
 = Does it work with Elementor, Bricks or the classic editor? =
 
@@ -106,6 +110,13 @@ Example: `[cabintale_widget type="service" border="0"]`
 4. Settings → Cabintale: connected account, widget list and live preview.
 
 == Changelog ==
+
+= 0.7.0 =
+* Czech translation, and the plugin now ships a translation template so it can be translated into any language.
+* Fixed a fatal error on the settings screen introduced in 0.6.0.
+* Fixed every widget being labelled "needs setup" even when its availability was set up.
+* A preview that cannot load now says so after ten seconds, instead of showing "Loading preview…" forever.
+* Clearer external-services disclosure: every request this plugin makes to Cabintale, and what it carries.
 
 = 0.6.0 =
 * Widgets with no availability set up in Cabintale are now flagged in the editor and in Settings, so an empty calendar explains itself.

@@ -1,0 +1,579 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Cabintale Booking Calendar 0.6.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/cabintale-booking-calendar\n"
+"Last-Translator: Cabintale <support@cabintale.com>\n"
+"Language-Team: Czech <support@cabintale.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-03T09:01:37+00:00\n"
+"PO-Revision-Date: 2026-08-03 11:00+0000\n"
+"Language: cs_CZ\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : ((n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: cabintale-booking-calendar\n"
+
+#. Plugin Name of the plugin
+#: cabintale-booking-calendar.php
+msgid "Cabintale Booking Calendar"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: cabintale-booking-calendar.php
+msgid "https://cabintale.com/"
+msgstr ""
+
+#. Description of the plugin
+#: cabintale-booking-calendar.php
+msgid "Show live availability and take bookings for your cabin, cottage or rental with a Cabintale widget — as a block or a shortcode."
+msgstr "Zobrazte živou dostupnost a přijímejte rezervace pro svou chatu, chalupu nebo pronájem pomocí widgetu Cabintale — jako blok nebo shortcode."
+
+#. Author of the plugin
+#: cabintale-booking-calendar.php
+#: includes/class-settings.php:62
+#: includes/class-settings.php:63
+#: includes/class-settings.php:148
+msgid "Cabintale"
+msgstr ""
+
+#: includes/class-connect.php:350
+msgid "Book now"
+msgstr "Rezervovat"
+
+#: includes/class-renderer.php:136
+msgid "Cabintale: choose a widget for this block, or set a default widget in Settings → Cabintale."
+msgstr "Cabintale: vyberte widget pro tento blok, nebo nastavte výchozí widget v Nastavení → Cabintale."
+
+#: includes/class-settings.php:124
+msgid "That does not look like a Cabintale widget ID. Copy it from the embed code in your Cabintale account."
+msgstr "To nevypadá jako ID widgetu Cabintale. Zkopírujte ho z embed kódu ve svém účtu Cabintale."
+
+#: includes/class-settings.php:149
+msgid "Booking calendar and availability for your pages"
+msgstr "Rezervační kalendář a dostupnost pro vaše stránky"
+
+#: includes/class-settings.php:179
+msgid "Put a widget on a page"
+msgstr "Vložte widget na stránku"
+
+#: includes/class-settings.php:182
+msgid "Any editor — Elementor, Bricks, Divi, classic, templates"
+msgstr "Jakýkoli editor — Elementor, Bricks, Divi, klasický editor, šablony"
+
+#: includes/class-settings.php:184
+msgid "Copy the shortcode next to your widget above."
+msgstr "Zkopírujte shortcode u svého widgetu výše."
+
+#: includes/class-settings.php:185
+msgid "Edit the page you already have, where you want the calendar to appear."
+msgstr "Upravte stránku, kterou už máte a kde chcete kalendář zobrazit."
+
+#: includes/class-settings.php:186
+msgid "Add a shortcode or text element, paste it in, and save."
+msgstr "Vložte prvek shortcode nebo text, vlepte ho tam a uložte."
+
+#: includes/class-settings.php:189
+msgid "This keeps your own page design. The widget sits inside it like any other element."
+msgstr "Zachováte tak vlastní design stránky. Widget se do něj zasadí jako kterýkoli jiný prvek."
+
+#: includes/class-settings.php:194
+msgid "Block editor"
+msgstr "Blokový editor"
+
+#: includes/class-settings.php:196
+msgid "Edit the page where you want bookings."
+msgstr "Upravte stránku, na které chcete přijímat rezervace."
+
+#: includes/class-settings.php:197
+msgid "Add the “Cabintale booking widget” block — type /cabintale to find it quickly."
+msgstr "Vložte blok „Cabintale rezervační widget“ — napište /cabintale a rychle ho najdete."
+
+#: includes/class-settings.php:198
+msgid "Pick your widget from the dropdown in the block settings, then update the page."
+msgstr "Vyberte svůj widget v rozbalovací nabídce v nastavení bloku a stránku aktualizujte."
+
+#: includes/class-settings.php:201
+msgid "While editing you will see a grey card instead of the calendar. That is normal — the widget loads on the published page."
+msgstr "Při úpravách uvidíte místo kalendáře šedou kartu. To je normální — widget se načte až na publikované stránce."
+
+#: includes/class-settings.php:221
+msgid "Prices, availability, blocked dates, seasonal pricing"
+msgstr "Ceny, dostupnost, blokovaná data, sezónní ceny"
+
+#: includes/class-settings.php:221
+#: includes/class-settings.php:222
+#: includes/class-settings.php:225
+msgid "Cabintale → Places"
+msgstr "Cabintale → Místa"
+
+#: includes/class-settings.php:222
+msgid "Calendar sync with Airbnb, Booking.com and other platforms (iCal)"
+msgstr "Synchronizace kalendáře s Airbnb, Booking.com a dalšími platformami (iCal)"
+
+#: includes/class-settings.php:223
+msgid "Services and time slots"
+msgstr "Služby a časové sloty"
+
+#: includes/class-settings.php:223
+msgid "Cabintale → Services"
+msgstr "Cabintale → Služby"
+
+#: includes/class-settings.php:224
+msgid "Widget language, look and booking form"
+msgstr "Jazyk widgetu, vzhled a rezervační formulář"
+
+#: includes/class-settings.php:224
+msgid "Cabintale → the widget"
+msgstr "Cabintale → widget"
+
+#: includes/class-settings.php:225
+msgid "Property name, timezone and currency"
+msgstr "Název ubytování, časové pásmo a měna"
+
+#: includes/class-settings.php:226
+msgid "Bookings as they come in"
+msgstr "Rezervace, jak přicházejí"
+
+#: includes/class-settings.php:226
+msgid "Cabintale → Dashboard"
+msgstr "Cabintale → Přehled"
+
+#: includes/class-settings.php:227
+msgid "Which widget appears on which page"
+msgstr "Který widget se zobrazuje na které stránce"
+
+#: includes/class-settings.php:227
+msgid "Here, in WordPress"
+msgstr "Zde, ve WordPressu"
+
+#: includes/class-settings.php:228
+msgid "Border, and hiding the booking form"
+msgstr "Ohraničení a skrytí rezervačního formuláře"
+
+#: includes/class-settings.php:228
+msgid "Block settings on the page"
+msgstr "Nastavení bloku na stránce"
+
+#: includes/class-settings.php:231
+msgid "Where to change what"
+msgstr "Kde co změnit"
+
+#: includes/class-settings.php:233
+msgid "What"
+msgstr "Co"
+
+#: includes/class-settings.php:234
+msgid "Where"
+msgstr "Kde"
+
+#: includes/class-settings.php:235
+msgid "Guide"
+msgstr "Návod"
+
+#: includes/class-settings.php:257
+msgid "Read"
+msgstr "Číst"
+
+#: includes/class-settings.php:583
+msgid "Needs setup:"
+msgstr "Vyžaduje nastavení:"
+
+#: includes/class-settings.php:584
+msgid "this widget has no availability in Cabintale yet, so it will show an empty calendar. Open its settings above and add availability or time slots."
+msgstr "tento widget ještě nemá v Cabintale žádnou dostupnost, takže zobrazí prázdný kalendář. Otevřete jeho nastavení výše a doplňte dostupnost nebo časové sloty."
+
+#: includes/class-settings.php:277
+msgid "Getting started in 30 minutes"
+msgstr "Začínáme za 30 minut"
+
+#: includes/class-settings.php:278
+msgid "The booking widget explained"
+msgstr "Jak funguje rezervační widget"
+
+#: includes/class-settings.php:279
+msgid "All Cabintale documentation"
+msgstr "Veškerá dokumentace Cabintale"
+
+#: includes/class-settings.php:282
+msgid "Help"
+msgstr "Nápověda"
+
+#: includes/class-settings.php:302
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: includes/class-settings.php:305
+msgid "Use a widget ID instead of connecting"
+msgstr "Použít ID widgetu bez připojení účtu"
+
+#: includes/class-settings.php:308
+msgid "If you would rather not connect your account, paste a widget ID here. It becomes the widget used by the shortcode and by blocks where nothing is chosen. In Cabintale, open a widget and copy the ID from its embed code."
+msgstr "Pokud nechcete připojit svůj účet, vložte sem ID widgetu. Stane se widgetem, který použije shortcode a bloky, ve kterých nic nevyberete. V Cabintale otevřete widget a zkopírujte ID z jeho embed kódu."
+
+#: includes/class-settings.php:318
+msgid "Widget ID"
+msgstr "ID widgetu"
+
+#: includes/class-settings.php:335
+msgid "What it is"
+msgstr "Co to je"
+
+#: includes/class-settings.php:341
+msgid "Property — availability calendar"
+msgstr "Ubytování — kalendář dostupnosti"
+
+#: includes/class-settings.php:342
+msgid "Service — time slots"
+msgstr "Služba — časové sloty"
+
+#: includes/class-settings.php:343
+msgid "Product — checkout button"
+msgstr "Produkt — tlačítko pokladny"
+
+#: includes/class-settings.php:346
+msgid "Must match the widget the ID belongs to, or the widget will not load. Connecting your account removes this guesswork."
+msgstr "Musí odpovídat widgetu, kterému ID patří, jinak se widget nenačte. Připojením účtu se tohoto hádání zbavíte."
+
+#: includes/class-settings.php:357
+msgid "Shortcode options"
+msgstr "Možnosti shortcode"
+
+#: includes/class-settings.php:361
+msgid "A specific widget ID. Defaults to the one above."
+msgstr "Konkrétní ID widgetu. Výchozí je to uvedené výše."
+
+#: includes/class-settings.php:362
+msgid "property, service or checkout. Must match the widget."
+msgstr "property, service nebo checkout. Musí odpovídat widgetu."
+
+#: includes/class-settings.php:363
+msgid "1 or 0."
+msgstr "1 nebo 0."
+
+#: includes/class-settings.php:364
+msgid "1 or 0. Properties only — shows the calendar without the booking form."
+msgstr "1 nebo 0. Jen u ubytování — zobrazí kalendář bez rezervačního formuláře."
+
+#: includes/class-settings.php:390
+msgid "Connected"
+msgstr "Připojeno"
+
+#: includes/class-settings.php:405
+msgid "Go to my Cabintale account"
+msgstr "Přejít na svůj účet Cabintale"
+
+#: includes/class-settings.php:411
+msgid "Disconnecting…"
+msgstr "Odpojuje se…"
+
+#: includes/class-settings.php:412
+msgid "Disconnect"
+msgstr "Odpojit"
+
+#: includes/class-settings.php:424
+msgid "Connect your Cabintale account"
+msgstr "Připojte svůj účet Cabintale"
+
+#: includes/class-settings.php:428
+msgid "Your properties, prices, availability and calendar sync live in Cabintale. This plugin puts them on your WordPress pages — change a price there and your pages show it straight away, with nothing to re-publish here."
+msgstr "Vaše ubytování, ceny, dostupnost a synchronizace kalendáře žijí v Cabintale. Tento plugin je zobrazí na vašich stránkách WordPress — změníte cenu tam a stránky ji hned zobrazí, tady nic znovu publikovat nemusíte."
+
+#: includes/class-settings.php:436
+msgid "Opening Cabintale…"
+msgstr "Otevírá se Cabintale…"
+
+#: includes/class-settings.php:437
+msgid "Connect to Cabintale"
+msgstr "Připojit k Cabintale"
+
+#: includes/class-settings.php:444
+msgid "No account yet? You can create one for free in the next step."
+msgstr "Ještě nemáte účet? V dalším kroku si ho můžete zdarma vytvořit."
+
+#: includes/class-settings.php:448
+msgid "Cabintale will ask you to approve the connection. It can only read the names of your properties and widgets — never your bookings, guests or payments."
+msgstr "Cabintale vás vyzve ke schválení propojení. Umí jen číst názvy vašich ubytování a widgetů — nikdy ne vaše rezervace, hosty ani platby."
+
+#: includes/class-settings.php:461
+msgid "Your widgets"
+msgstr "Vaše widgety"
+
+#: includes/class-settings.php:464
+msgid "No widgets yet. Create one in Cabintale, then come back here to add it to a page."
+msgstr "Ještě žádné widgety. Vytvořte jeden v Cabintale a pak se vraťte sem a vložte ho na stránku."
+
+#: includes/class-settings.php:468
+msgid "Open Cabintale"
+msgstr "Otevřít Cabintale"
+
+#: includes/class-settings.php:475
+msgid "How a widget looks, what language it speaks and which fields it asks for are set in Cabintale, per widget."
+msgstr "Jak widget vypadá, jakým jazykem mluví a na co se ptá ve formuláři, se nastavuje v Cabintale, pro každý widget zvlášť."
+
+#: includes/class-settings.php:479
+#: assets/js/editor.js:149
+#: assets/js/editor.js:172
+msgid "Widget"
+msgstr "Widget"
+
+#: includes/class-settings.php:480
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: includes/class-settings.php:481
+msgid "Actions"
+msgstr "Akce"
+
+#: includes/class-settings.php:493
+msgid "Untitled widget"
+msgstr "Widget bez názvu"
+
+#: includes/class-settings.php:510
+msgid "Needs setup"
+msgstr "Vyžaduje nastavení"
+
+#: includes/class-settings.php:523
+msgid "Copied"
+msgstr "Zkopírováno"
+
+#: includes/class-settings.php:524
+msgid "Copy"
+msgstr "Kopírovat"
+
+#. translators: %s: widget name.
+#: includes/class-settings.php:539
+#, php-format
+msgid "Loading preview of %s"
+msgstr "Načítá se náhled %s"
+
+#: includes/class-settings.php:540
+msgid "Preview"
+msgstr "Náhled"
+
+#: includes/class-settings.php:572
+msgid "Loading preview…"
+msgstr "Načítá se náhled…"
+
+#: includes/class-settings.php:573
+msgid "The preview did not load. A browser extension, a security plugin or a content security policy may be blocking admin.cabintale.com. The widget can still be fine on your published page — open it full size below to check."
+msgstr "Náhled se nenačetl. Může ho blokovat rozšíření prohlížeče, bezpečnostní plugin nebo content security policy pro admin.cabintale.com. Na publikované stránce může widget přesto fungovat v pořádku — ověřte to otevřením v plné velikosti níže."
+
+#. translators: %s: widget name.
+#: includes/class-settings.php:569
+#, php-format
+msgid "Preview of %s"
+msgstr "Náhled %s"
+
+#: includes/class-settings.php:571
+msgid "This is live — visitors see the same widget on your page."
+msgstr "Toto je živé — návštěvníci vidí na vaší stránce stejný widget."
+
+#: includes/class-settings.php:574
+msgid "Open full size"
+msgstr "Otevřít v plné velikosti"
+
+#: includes/class-settings.php:595
+msgid "Creating the page…"
+msgstr "Vytváří se stránka…"
+
+#: includes/class-settings.php:596
+msgid "Create a starter page"
+msgstr "Vytvořit úvodní stránku"
+
+#: includes/class-settings.php:599
+msgid "Makes a new page called “Book now” with your first widget on it, using your theme’s default layout. If you already have a page designed, paste the shortcode into it instead."
+msgstr "Vytvoří novou stránku „Rezervovat“ s vaším prvním widgetem, podle výchozího vzhledu vaší šablony. Pokud už máte stránku navrženou, vložte shortcode do ní."
+
+#: includes/class-settings.php:647
+msgid "Connected. Your widgets are now available in the Cabintale block."
+msgstr "Připojeno. Vaše widgety jsou teď dostupné v bloku Cabintale."
+
+#: includes/class-settings.php:648
+msgid "Disconnected. Widgets already on your pages keep working."
+msgstr "Odpojeno. Widgety, které už máte na stránkách, dál fungují."
+
+#: includes/class-settings.php:649
+msgid "Connection cancelled. Nothing changed."
+msgstr "Propojení zrušeno. Nic se nezměnilo."
+
+#: includes/class-settings.php:650
+msgid "That connection attempt timed out. Try connecting again."
+msgstr "Ten pokus o propojení vypršel. Zkuste se připojit znovu."
+
+#: includes/class-settings.php:651
+msgid "That connection could not be verified. Try connecting again."
+msgstr "Toto propojení se nepodařilo ověřit. Zkuste se připojit znovu."
+
+#: includes/class-settings.php:652
+msgid "Could not reach Cabintale. Check your internet connection and try again."
+msgstr "Nepodařilo se spojit s Cabintale. Zkontrolujte internetové připojení a zkuste to znovu."
+
+#: includes/class-settings.php:653
+msgid "Cabintale did not accept the connection. Try connecting again."
+msgstr "Cabintale propojení nepřijalo. Zkuste se připojit znovu."
+
+#: includes/class-settings.php:654
+msgid "Connected, but there are no widgets on your Cabintale account yet. Create one in Cabintale, then refresh this page."
+msgstr "Připojeno, ale na vašem účtu Cabintale ještě nejsou žádné widgety. Vytvořte jeden v Cabintale a pak obnovte tuto stránku."
+
+#: includes/class-settings.php:655
+msgid "The booking page could not be created. Add the Cabintale block to a page yourself instead."
+msgstr "Rezervační stránku se nepodařilo vytvořit. Vložte blok Cabintale na stránku sami."
+
+#: includes/class-settings.php:674
+msgid "A service — time slots"
+msgstr "Služba — časové sloty"
+
+#: includes/class-settings.php:678
+msgid "A product — checkout button"
+msgstr "Produkt — tlačítko pokladny"
+
+#: includes/class-settings.php:681
+msgid "A property — availability calendar"
+msgstr "Ubytování — kalendář dostupnosti"
+
+#: includes/class-settings.php:719
+msgid "Cabintale is active. Add your widget to finish setting it up."
+msgstr "Cabintale je aktivní. Doplňte widget a dokončete nastavení."
+
+#: includes/class-settings.php:721
+msgid "Open Cabintale settings"
+msgstr "Otevřít nastavení Cabintale"
+
+#: includes/class-settings.php:733
+msgid "Settings"
+msgstr "Nastavení"
+
+#: assets/js/editor.js:27
+msgid "Service"
+msgstr "Služba"
+
+#: assets/js/editor.js:30
+msgid "Product"
+msgstr "Produkt"
+
+#: assets/js/editor.js:32
+msgid "Place"
+msgstr "Ubytování"
+
+#: assets/js/editor.js:48
+msgid "This service has no time slots in Cabintale yet, so the picker will be empty. Add slots in Cabintale, then this widget starts working — nothing to change here."
+msgstr "Tato služba ještě nemá v Cabintale žádné časové sloty, takže výběr bude prázdný. Doplňte sloty v Cabintale a widget začne fungovat — tady nic měnit nemusíte."
+
+#: assets/js/editor.js:54
+msgid "This property has no availability in Cabintale yet, so the calendar will show no bookable dates. Set availability and prices in Cabintale, then this widget starts working — nothing to change here."
+msgstr "Toto ubytování ještě nemá v Cabintale žádnou dostupnost, takže kalendář nezobrazí žádná rezervovatelná data. Nastavte dostupnost a ceny v Cabintale a widget začne fungovat — tady nic měnit nemusíte."
+
+#: assets/js/editor.js:74
+msgid "needs setup"
+msgstr "vyžaduje nastavení"
+
+#: assets/js/editor.js:142
+msgid "— Select a widget —"
+msgstr "— Vyberte widget —"
+
+#: assets/js/editor.js:160
+msgid "No widgets on your Cabintale account yet."
+msgstr "Na vašem účtu Cabintale ještě nejsou žádné widgety."
+
+#: assets/js/editor.js:161
+msgid "Connect your Cabintale account in Settings → Cabintale to choose widgets by name."
+msgstr "Připojte svůj účet Cabintale v Nastavení → Cabintale a vybírejte widgety podle jména."
+
+#: assets/js/editor.js:178
+msgid "Show border"
+msgstr "Zobrazit ohraničení"
+
+#: assets/js/editor.js:187
+msgid "Availability only (no booking form)"
+msgstr "Jen dostupnost (bez rezervačního formuláře)"
+
+#: assets/js/editor.js:204
+msgid "The live widget appears on the published page."
+msgstr "Živý widget se zobrazí na publikované stránce."
+
+#: assets/js/editor.js:213
+msgid "Cabintale booking widget"
+msgstr "Cabintale rezervační widget"
+
+#: assets/js/editor.js:215
+msgid "Choose a widget in the block settings."
+msgstr "Vyberte widget v nastavení bloku."
+
+#: assets/js/editor.js:216
+msgid "Connect your Cabintale account in Settings → Cabintale, then choose a widget here. A free account takes a couple of minutes."
+msgstr "Připojte svůj účet Cabintale v Nastavení → Cabintale a pak tady vyberte widget. Založení účtu zdarma zabere pár minut."
+
+#: assets/js/editor.js:226
+msgid "Create a free Cabintale account"
+msgstr "Vytvořit účet Cabintale zdarma"
+
+#: blocks/widget/block.json
+msgctxt "block title"
+msgid "Cabintale booking widget"
+msgstr "Cabintale rezervační widget"
+
+#: blocks/widget/block.json
+msgctxt "block description"
+msgid "Live availability and bookings for one of your Cabintale places or services."
+msgstr "Živá dostupnost a rezervace pro jedno z vašich ubytování nebo služeb v Cabintale."
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "booking"
+msgstr "rezervace"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "bookings"
+msgstr "rezervace"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "calendar"
+msgstr "kalendář"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "availability"
+msgstr "dostupnost"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "reservation"
+msgstr "rezervace"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "rental"
+msgstr "pronájem"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "cabin"
+msgstr "chata"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "cottage"
+msgstr "chalupa"
+
+#: blocks/widget/block.json
+msgctxt "block keyword"
+msgid "cabintale"
+msgstr ""
+
+#. translators: %d: number of widgets available on the connected account.
+#: includes/class-settings.php:394
+#, php-format
+msgid "%d widget"
+msgid_plural "%d widgets"
+msgstr[0] "%d widget"
+msgstr[1] "%d widgety"
+msgstr[2] "%d widgetů"
+
+#: includes/class-settings.php:542
+msgid "Style & language"
+msgstr "Vzhled a jazyk"
