@@ -104,10 +104,11 @@ Example: `[cabintale_widget type="service" border="0"]`
 
 == Screenshots ==
 
-1. An availability calendar on a published page.
-2. The Cabintale booking widget block in the editor.
-3. Block settings: pick a widget by name.
-4. Settings → Cabintale: connected account, widget list and live preview.
+1. A live availability calendar on a published page, with your own dates and prices.
+2. The Cabintale booking widget block, added to a page like any other block.
+3. Pick a widget by name in the block settings — no IDs to copy.
+4. Settings → Cabintale: your connected account, every widget with its own shortcode, and a live preview.
+5. Connecting is read-only. Cabintale names the site asking and shows exactly what it may see.
 
 == Changelog ==
 
