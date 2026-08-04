@@ -91,7 +91,8 @@ The calendar fits as many months as it has room for, and drops the rest rather t
 
 Most themes make the content column narrower than that — 645 pixels is typical — which is enough for two months but not three. Give the widget more room and the missing months come back:
 
-* **Block editor:** select the block and use the alignment button in its toolbar — **Wide width** usually gives around 1300 pixels, **Full width** gives the whole screen.
+* **The Cabintale block:** select it and use the alignment button in its toolbar — **Wide width** usually gives around 1300 pixels, **Full width** gives the whole screen.
+* **A shortcode in the block editor:** WordPress's Shortcode block has no alignment of its own. Select it, open the options menu (three dots) and choose **Group**, then set that Group to Wide or Full width.
 * **Elementor, Bricks, Divi:** widen the section, container or column the shortcode sits in, or set it to full width.
 * **Any theme:** many offer a full-width or no-sidebar page template, which widens everything on the page.
 
@@ -125,7 +126,7 @@ Example: `[cabintale_widget type="service" border="0"]`
 == Changelog ==
 
 = 0.7.3 =
-* New FAQ: how much room a two- or three-month calendar needs, and where to widen it.
+* New FAQ: how much room a two- or three-month calendar needs, and where to widen it — including the Shortcode block, which has no alignment of its own.
 
 = 0.7.2 =
 * The cached widget list is now invalidated when its shape changes, so an upgrade can no longer show stale "Needs setup" badges for ten minutes.
