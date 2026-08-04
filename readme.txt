@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.7.2
+Stable tag: 0.7.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -85,6 +85,18 @@ Yes. Add as many blocks or shortcodes as you need, each with its own widget ID.
 
 Yes. Turn on **Availability only** in the block settings, or use `[cabintale_widget availability_only="1"]`.
 
+= My widget is set to two or three months, but fewer show up =
+
+The calendar fits as many months as it has room for, and drops the rest rather than squeezing them until the dates are unreadable. Each month needs roughly 320 pixels, so two months want about 640 and three about 960.
+
+Most themes make the content column narrower than that — 645 pixels is typical — which is enough for two months but not three. Give the widget more room and the missing months come back:
+
+* **Block editor:** select the block and use the alignment button in its toolbar — **Wide width** usually gives around 1300 pixels, **Full width** gives the whole screen.
+* **Elementor, Bricks, Divi:** widen the section, container or column the shortcode sits in, or set it to full width.
+* **Any theme:** many offer a full-width or no-sidebar page template, which widens everything on the page.
+
+On a phone you will always see one month, whatever the setting. Three months side by side on a 390 pixel screen would be unusable.
+
 = Why does the block show a card instead of the widget while I am editing? =
 
 The editor shows a placeholder on purpose. The booking dialog opens as a full-screen overlay, which does not behave well nested inside the editor canvas. Preview or publish the page to see the real widget.
@@ -111,6 +123,9 @@ Example: `[cabintale_widget type="service" border="0"]`
 5. Connecting is read-only. Cabintale names the site asking and shows exactly what it may see.
 
 == Changelog ==
+
+= 0.7.3 =
+* New FAQ: how much room a two- or three-month calendar needs, and where to widen it.
 
 = 0.7.2 =
 * The cached widget list is now invalidated when its shape changes, so an upgrade can no longer show stale "Needs setup" badges for ten minutes.
