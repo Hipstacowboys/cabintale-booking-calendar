@@ -140,13 +140,7 @@ The listing page is not a web page you control, and the two obvious assumptions 
 - **Inline images in the description do not work.** Markdown `![]()` is not rendered; the handbook's advice is to "direct people to your own website" for documentation with images. Every picture on the listing comes from the Screenshots gallery, the banner and the icon — that gallery is what makes an image-rich listing look image-rich.
 - **A video does work.** A YouTube or Vimeo URL alone on its own line is auto-embedded, and `[youtube URL]`, `[vimeo URL]` and `[wpvideo ID]` are accepted. Raw `<embed>`/`<object>` HTML is not, and a video cannot stand in for a screenshot in the Screenshots section.
 
-If a demo screencast ever exists, put its URL on its own line just under the first paragraph of `== Description ==`:
 
-```
-Cabintale Booking Calendar puts your Cabintale booking widget on your WordPress site without touching any code.
-
-https://www.youtube.com/watch?v=XXXXXXXXXXX
-```
 
 For this plugin the natural cut is about sixty seconds: install, connect, drop the block on a page, and a visitor booking a date.
 
