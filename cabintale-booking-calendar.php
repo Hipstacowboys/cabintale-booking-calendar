@@ -1,7 +1,6 @@
 <?php
 /**
  * Plugin Name:       Cabintale Booking Calendar
- * Plugin URI:        https://cabintale.com/
  * Description:       Show live availability and take bookings for your cabin, cottage or rental with a Cabintale widget — as a block or a shortcode.
  * Version:           0.7.3
  * Requires at least: 6.3
