@@ -4,3 +4,8 @@
 /.distignore
 /README.md
 /.wordpress-org
+
+# Translation sources only. WordPress.org compiles and delivers every locale
+# from translate.wordpress.org, so no translation file may ship in the zip.
+# See languages/README.md.
+/languages

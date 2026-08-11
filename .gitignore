@@ -6,3 +6,9 @@ vendor/
 
 # Local WordPress symlinks / test artifacts
 .wp-env.override.json
+
+# Compiled translations. WordPress.org builds these from
+# translate.wordpress.org; shipping them is a review rejection.
+languages/*.mo
+languages/*.l10n.php
+languages/*.json

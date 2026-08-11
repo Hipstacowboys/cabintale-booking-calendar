@@ -4,7 +4,7 @@ Tags: booking, availability, calendar, reservations, vacation rental
 Requires at least: 6.3
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 0.7.3
+Stable tag: 0.7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,9 @@ Example: `[cabintale_widget type="service" border="0"]`
 
 == Changelog ==
 
+= 0.7.4 =
+* Translations now come from translate.wordpress.org, so every locale the community translates is delivered automatically instead of only the ones bundled here.
+
 = 0.7.3 =
 * New FAQ: how much room a two- or three-month calendar needs, and where to widen it — including the Shortcode block, which has no alignment of its own.
 
@@ -137,7 +140,7 @@ Example: `[cabintale_widget type="service" border="0"]`
 * The "Needs setup" badge now sits under the widget type instead of beside its name, and the status message after connecting no longer lands inside the Cabintale header.
 
 = 0.7.0 =
-* Czech translation, and the plugin now ships a translation template so it can be translated into any language.
+* Every string in the plugin is now translatable.
 * Fixed a fatal error on the settings screen introduced in 0.6.0.
 * Fixed every widget being labelled "needs setup" even when its availability was set up.
 * A preview that cannot load now says so after ten seconds, instead of showing "Loading preview…" forever.

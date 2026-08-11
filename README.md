@@ -102,16 +102,14 @@ wp plugin install plugin-check --activate
 wp plugin check cabintale-booking-calendar --exclude-files=.gitignore,.distignore --include-experimental
 ```
 
-One warning is expected and deliberate: `load_plugin_textdomain()` is flagged as unnecessary since WordPress 4.6, but the Czech translation ships inside the plugin, and just-in-time loading only learned to resolve a bundled translation through the `Domain Path` header in WordPress 6.7. This plugin supports 6.3.
-
-Regenerate translations after changing any user-facing string:
+Regenerate the translation template after changing any user-facing string:
 
 ```bash
 wp i18n make-pot . languages/cabintale-booking-calendar.pot
 wp i18n update-po languages/cabintale-booking-calendar.pot languages/cabintale-booking-calendar-cs_CZ.po
-# fill in the new msgstr, then:
-wp i18n make-mo languages/ && wp i18n make-php languages/ && wp i18n make-json languages/ --no-purge
 ```
+
+Stop there. No `.mo`, `.l10n.php` or locale `.json` may exist in the plugin — WordPress.org compiles and delivers every locale from translate.wordpress.org, and shipping compiled translations is a review rejection. `languages/` is excluded from the zip entirely; see [`languages/README.md`](languages/README.md).
 
 ## Listing assets
 

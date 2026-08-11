@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Cabintale Booking Calendar
  * Description:       Show live availability and take bookings for your cabin, cottage or rental with a Cabintale widget — as a block or a shortcode.
- * Version:           0.7.3
+ * Version:           0.7.4
  * Requires at least: 6.3
  * Requires PHP:      7.4
  * Author:            Cabintale
@@ -10,7 +10,6 @@
  * License:           GPLv2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       cabintale-booking-calendar
- * Domain Path:       /languages
  *
  * Cabintale Booking Calendar is free software: you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published by
@@ -24,7 +23,7 @@ namespace Cabintale\BookingCalendar;
 
 defined( 'ABSPATH' ) || exit;
 
-const VERSION  = '0.7.3';
+const VERSION  = '0.7.4';
 const SLUG     = 'cabintale-booking-calendar';
 const TEXT_DOM = 'cabintale-booking-calendar';
 
@@ -103,22 +102,11 @@ function register_assets(): void {
 }
 add_action( 'init', __NAMESPACE__ . '\register_assets' );
 
-/**
- * Load translations. Kept on init (not plugins_loaded) to match how WordPress
- * loads block and shortcode strings.
- *
- * Plugin Check flags load_plugin_textdomain() as unnecessary since WordPress
- * 4.6, and for translations delivered from translate.wordpress.org it is. The
- * Czech translation in languages/ ships with the plugin instead, and
- * just-in-time loading only learned to find a bundled translation through the
- * Domain Path header in WordPress 6.7 — this plugin supports 6.3. Verified on
- * 7.0.2 that the call is redundant there; it is kept for the four releases
- * where it is not.
- */
-function load_textdomain(): void {
-	load_plugin_textdomain( TEXT_DOM, false, dirname( plugin_basename( PLUGIN_FILE ) ) . '/languages' );
-}
-add_action( 'init', __NAMESPACE__ . '\load_textdomain' );
+// No load_plugin_textdomain() and no bundled translations: this plugin is
+// hosted on WordPress.org, so locales come from translate.wordpress.org into
+// WP_LANG_DIR/plugins, where just-in-time loading has found them since
+// WordPress 4.6. The Czech .po in the repo is a source file for GlotPress, not
+// something the plugin loads — see languages/README.md.
 
 Block::init();
 Shortcode::init();
