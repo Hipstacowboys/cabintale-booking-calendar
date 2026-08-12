@@ -3,6 +3,7 @@
 /.gitignore
 /.distignore
 /README.md
+/deploy.md
 /.wordpress-org
 
 # Translation sources only. WordPress.org compiles and delivers every locale

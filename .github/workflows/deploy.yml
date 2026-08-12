@@ -1,0 +1,38 @@
+name: Deploy to WordPress.org
+
+# Pushing a bare version tag (0.7.5, 1.0.0) releases that commit.
+# The tag name becomes the SVN tag, so it must match `Stable tag:` in readme.txt.
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Release ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v4
+
+      - name: Refuse to release if the version numbers disagree with the tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          stable=$(grep -m1 '^Stable tag:' readme.txt | sed 's/^Stable tag:[[:space:]]*//' | tr -d '[:space:]')
+          header=$(grep -m1 '^ \* Version:' cabintale-booking-calendar.php | sed 's/^ \* Version:[[:space:]]*//' | tr -d '[:space:]')
+          echo "tag=$TAG stable=$stable header=$header"
+          test "$stable" = "$TAG" || { echo "readme.txt Stable tag does not match the git tag"; exit 1; }
+          test "$header" = "$TAG" || { echo "Plugin header Version does not match the git tag"; exit 1; }
+
+      - name: Deploy trunk, tag and listing assets
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: cabintale-booking-calendar
+          ASSETS_DIR: .wordpress-org
